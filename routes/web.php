@@ -1,6 +1,7 @@
 <?php
 
 use App\controllers\DashboardController;
+use App\controllers\FollowController;
 use App\controllers\TweetCommentController;
 use App\controllers\TweetController;
 use App\controllers\TweetLikeController;
@@ -32,11 +33,15 @@ $app->router->get('/comments/{id}/edit', [TweetCommentController::class, 'edit']
 $app->router->post('/comments/{id}/update', [TweetCommentController::class, 'update']);
 $app->router->post('/comments/{id}/delete', [TweetCommentController::class, 'destroy']);
 
+/** Follows route */
+$app->router->get('/{username}/followers', [FollowController::class, 'followersIndex']);
+$app->router->get('/{username}/following', [FollowController::class, 'followingIndex']);
+$app->router->post('/users/{id}/follow', [FollowController::class, 'store']);
+$app->router->post('/users/{id}/unfollow', [FollowController::class, 'destroy']);
+
 /** Dashboard */
 $app->router->get('/settings', [DashboardController::class, 'show']);
 $app->router->post('/settings', [DashboardController::class, 'update']);
-
 $app->router->get('/delete-account', [DashboardController::class, 'destroy']);
 $app->router->post('/delete-account', [DashboardController::class, 'destroy']);
-
 $app->router->post('/update-password', [UpdatePasswordController::class, 'update']);

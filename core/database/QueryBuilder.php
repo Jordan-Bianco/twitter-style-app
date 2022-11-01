@@ -72,6 +72,12 @@ class QueryBuilder
         return $this;
     }
 
+    /**
+     * @param string $field
+     * @param string $value
+     * @param string $condition
+     * @return QueryBuilder
+     */
     public function andWhere(string $field, string $value, ?string $condition = '='): QueryBuilder
     {
         $this->query .= " AND $field $condition :$field";
@@ -79,6 +85,29 @@ class QueryBuilder
         $this->statement = $this->pdo->prepare($this->query);
 
         $this->params[] = [":$field" => $value];
+
+        return $this;
+    }
+
+    /**
+     * @param string $field
+     * @param string $subQuery
+     * @param string $value
+     * @param string $condition
+     * @return 
+     */
+    public function whereSubquery(string $field, string $subQuery, string $value, ?string $condition = '='): QueryBuilder
+    {
+        $subQueryField = trim(explode(':', $subQuery)[1], ')');
+
+        $statement = $this->pdo->prepare($subQuery);
+        $statement->bindParam(":$subQueryField", $value);
+        $statement->execute();
+        $subQueryResult = $statement->fetchColumn();
+
+        $this->query .= " WHERE $field = $subQueryResult";
+
+        $this->statement = $this->pdo->prepare($this->query);
 
         return $this;
     }

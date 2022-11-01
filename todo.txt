@@ -1,3 +1,13 @@
-[] testare app
-[] scrivere file readme
-[] caricare github
+
+[x] check se utente ha the current user tra i suoi following
+[x] Aggiungere follow
+[x] Rimuovere follow
+[x]  Pagina con elenco followers
+[x]  Pagina con elenco following
+[]  Pagina con richieste e related status
+
+
+aggiungere al baseframework il docblock del metodo andHWere
+e il metodo wheresubquery
+
+[] mostrare nella home solo i propri tweetse quelli degli utenti seguiti 

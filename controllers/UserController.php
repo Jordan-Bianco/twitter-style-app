@@ -21,11 +21,14 @@ class UserController extends Controller
     {
         $user = $this->app->builder
             ->select('users', [
-                'id',
-                'username',
-                'bio',
-                'email',
-                'created_at'
+                'users.id',
+                'users.username',
+                'users.bio',
+                'users.email',
+                'users.created_at',
+                '(SELECT COUNT(*) FROM tweets WHERE user_id = users.id) as tweets_count',
+                '(SELECT COUNT(*) FROM follows WHERE follower_id = users.id) as following_count',
+                '(SELECT COUNT(*) FROM follows WHERE following_id = users.id) as followers_count'
             ])
             ->where('username', $request->routeParams['username'])
             ->first();

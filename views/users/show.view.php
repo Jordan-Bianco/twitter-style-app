@@ -2,11 +2,12 @@
 
 use App\core\Application;
 use App\core\Session;
+use App\models\Follow;
 use App\models\Like;
 
 ?>
 <div class="max-w-lg mx-auto">
-    <header class="mb-10">
+    <header class="mb-10 space-y-6">
         <div class="flex justify-between items-center">
             <div class="flex items-center space-x-4">
                 <img src="https://eu.ui-avatars.com/api/?name=<?= $user['username'] ?>" alt="user_avatar" class="w-12 h-12 rounded-lg flex-none">
@@ -22,19 +23,52 @@ use App\models\Like;
                     <span class="text-xs text-lime-500 font-medium">
                         <?= $user['created_at'] ?>
                     </span>
-
                 </div>
             </div>
 
-            <?php if (Session::isLoggedIn() && Application::$app->session->get('user')['id'] === $user['id']) : ?>
-                <div class="text-xs text-zinc-500">
-                    <a href="/settings" class="hover:text-lime-500">Impostazioni</a>
-                </div>
-            <?php endif ?>
+            <div>
+                <?php if (Session::isLoggedIn() && Application::$app->session->get('user')['id'] === $user['id']) : ?>
+                    <div class="text-xs text-zinc-500">
+                        <a href="/settings" class="hover:text-lime-500">Impostazioni</a>
+                    </div>
+                <?php endif ?>
+
+                <?php if (Session::isLoggedIn() && Application::$app->session->get('user')['id'] !== $user['id']) : ?>
+                    <?php if (!Follow::isFollowing($user['id'])) : ?>
+                        <form action="/users/<?= $user['id'] ?>/follow" method="post">
+                            <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
+                                Follow
+                            </button>
+                        </form>
+                    <?php else : ?>
+                        <form action="/users/<?= $user['id'] ?>/unfollow" method="post">
+                            <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
+                                Unfollow
+                            </button>
+                        </form>
+                    <?php endif ?>
+                <?php endif ?>
+            </div>
         </div>
-        <p class="text-xs text-zinc-300 mt-6">
+
+        <p class="text-zinc-300">
             <?= $user['bio'] ?? '' ?>
         </p>
+
+        <div class="flex items-center justify-around border-b border-t border-zinc-700 py-4">
+            <div class="flex flex-col items-center">
+                <span class="text-xs">Tweets</span>
+                <span class="block text-lime-500 font-semibold"><?= $user['tweets_count'] ?></span>
+            </div>
+            <div class="flex flex-col items-center">
+                <span class="text-xs">Followers</span>
+                <a href="/<?= $user['username'] ?>/followers" class="block text-lime-500 font-semibold"><?= $user['followers_count'] ?></a>
+            </div>
+            <div class="flex flex-col items-center">
+                <span class="text-xs">Following</span>
+                <a href="/<?= $user['username'] ?>/following" class="block text-lime-500 font-semibold"><?= $user['following_count'] ?></a>
+            </div>
+        </div>
     </header>
 
     <?php if ($tweets) : ?>
