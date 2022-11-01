@@ -1,13 +1,22 @@
+[x] Sulla pagina profilo di un utente, check se l'utente loggato ha l'utente già tra i suoi following. (bottone follow/unfollow)
+[x] Inviare richiesta follow, premendo il tasto follow sul profilo di un utente (viene salvata nel DB un record tipo: 1 - 2 - pending - timestamp)
+[x] Unfolloware un following, dal profilo di un utente (nella sezione Following) premendo il tasto unfollow (indifferente se la richiesta è stata accettata o meno)
+[x] Pagina all'interno del profilo utente con elenco following
+    [x] Se utente loggato è lo stesso del profilo su cui ci si trova, mostrare una sezione richieste inviate
+        [x] possibilità di annullare una richiesta inviata di following
+    [x] Se utente loggato è lo stesso del profilo su cui ci si trova, mostrare una sezione richieste accettate
+        [x] unfolloware un utente già tra i propri following
+    [x] Se utente loggato è lo stesso del profilo su cui ci si trova, mostrare una sezione richieste respinte
 
-[x] check se utente ha the current user tra i suoi following
-[x] Aggiungere follow
-[x] Rimuovere follow
-[x]  Pagina con elenco followers
-[x]  Pagina con elenco following
-[]  Pagina con richieste e related status
+[x] Pagina con elenco followers
+[x] accettare richieste di follow
+[x] respingere richiesta di follow 
+[x] rimuovere un follower (accettato) dalla propria lista followers 
+
+
+[] profilo privato? se non ci si segue a vicenda, niente tweet :)
+[] mostrare nella home solo i propri tweets e quelli degli utenti seguiti
 
 
 aggiungere al baseframework il docblock del metodo andHWere
 e il metodo wheresubquery
-
-[] mostrare nella home solo i propri tweetse quelli degli utenti seguiti 

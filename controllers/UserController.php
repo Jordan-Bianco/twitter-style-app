@@ -27,8 +27,8 @@ class UserController extends Controller
                 'users.email',
                 'users.created_at',
                 '(SELECT COUNT(*) FROM tweets WHERE user_id = users.id) as tweets_count',
-                '(SELECT COUNT(*) FROM follows WHERE follower_id = users.id) as following_count',
-                '(SELECT COUNT(*) FROM follows WHERE following_id = users.id) as followers_count'
+                "(SELECT COUNT(*) FROM follows WHERE follower_id = users.id AND status = 'Accepted') as following_count",
+                "(SELECT COUNT(*) FROM follows WHERE following_id = users.id AND status = 'Accepted') as followers_count"
             ])
             ->where('username', $request->routeParams['username'])
             ->first();

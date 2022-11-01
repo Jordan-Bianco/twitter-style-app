@@ -13,9 +13,9 @@ class Follow extends Model
 
     /**
      * @param int $userId
-     * @return bool
+     * @return bool|string
      */
-    public static function isFollowing(int $userId): bool
+    public static function requestStatus(int $userId): bool|string
     {
         if (!Application::$app->session->isLoggedIn()) {
             return false;
@@ -27,6 +27,6 @@ class Follow extends Model
             ->andWhere('following_id', $userId)
             ->first();
 
-        return is_null($follow) ? false : true;
+        return is_null($follow) ? false : $follow['status'];
     }
 }

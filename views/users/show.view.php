@@ -10,17 +10,16 @@ use App\models\Like;
     <header class="mb-10 space-y-6">
         <div class="flex justify-between items-center">
             <div class="flex items-center space-x-4">
-                <img src="https://eu.ui-avatars.com/api/?name=<?= $user['username'] ?>" alt="user_avatar" class="w-12 h-12 rounded-lg flex-none">
+                <img src="https://eu.ui-avatars.com/api/?name=<?= $user['username'] ?>" alt="user_avatar" class="w-14 h-14 rounded-lg flex-none">
 
-                <div>
-                    <h2 class="text-lg font-semibold">
+                <div class="space-y-1">
+                    <h2 class="text-base font-medium">
                         <?= '@' . $user['username'] ?>
                     </h2>
-                    <span class="text-sm text-zinc-500">
+                    <span class="block text-xs text-zinc-500">
                         <?= $user['email'] ?>
                     </span>
-                    <span class="text-xs text-zinc-500">&bull;</span>
-                    <span class="text-xs text-lime-500 font-medium">
+                    <span class="block text-xs text-lime-500 font-medium">
                         <?= $user['created_at'] ?>
                     </span>
                 </div>
@@ -33,20 +32,37 @@ use App\models\Like;
                     </div>
                 <?php endif ?>
 
+                <!-- Se si è loggati e non si è sul proprio profilo -->
                 <?php if (Session::isLoggedIn() && Application::$app->session->get('user')['id'] !== $user['id']) : ?>
-                    <?php if (!Follow::isFollowing($user['id'])) : ?>
+
+                    <?php if (!Follow::requestStatus($user['id'])) : ?>
+                        <!-- Se non è stata inviata la richiesta di follow -->
                         <form action="/users/<?= $user['id'] ?>/follow" method="post">
                             <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
                                 Follow
                             </button>
                         </form>
+                    <?php elseif (Follow::requestStatus($user['id']) === 'Pending') : ?>
+                        <!-- Se è stata inviata, ed è in attesa -->
+                        <form action="/users/<?= $user['id'] ?>/unfollow" method="post">
+                            <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
+                                Request sent
+                            </button>
+                        </form>
+                    <?php elseif (Follow::requestStatus($user['id']) === 'Declined') : ?>
+                        <!-- Se è stata inviata, ed è stata rifiutata -->
+                        <span class="block cursor-default tracking-wide bg-zinc-400 focus:outline-none text-white px-5 py-1.5 rounded-full text-xs">
+                            Request declined
+                        </span>
                     <?php else : ?>
+                        <!-- Se è stata inviata ed è stata accettata -->
                         <form action="/users/<?= $user['id'] ?>/unfollow" method="post">
                             <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
                                 Unfollow
                             </button>
                         </form>
                     <?php endif ?>
+
                 <?php endif ?>
             </div>
         </div>
