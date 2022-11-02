@@ -4,7 +4,7 @@
 $this->title .= ' - Error';
 ?>
 
-<div class="bg-blue-200 border-blue-300 text-blue-500 p-4 rounded">
+<div class="bg-lime-200 border-lime-300 text-lime-500 p-4 rounded">
     Ops.. something went wrong!
 
     <span class="font-semibold">

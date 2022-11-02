@@ -14,6 +14,8 @@ class TweetController extends Controller
         parent::__construct();
 
         $this->registerMiddleware(new AuthMiddleware([
+            'index',
+            'show',
             'store',
             'edit',
             'update',
@@ -23,18 +25,18 @@ class TweetController extends Controller
 
     public function index()
     {
+        $userFollowingIds = $this->getUserFollowingIds();
+
         $perPage = 5;
-        $total = $this->app->builder->count('tweets');
+        $total = $this->app->builder->raw("SELECT COUNT(*) as count FROM tweets WHERE user_id IN ($userFollowingIds)");
+        $total = $total[0]['count'];
         $totalPages = ceil($total / $perPage);
         $currentPage = isset($_GET['page']) && !empty($_GET['page']) ? $_GET['page'] : 1;
-
         $offset = ($currentPage - 1) * $perPage;
         $rowCount = $perPage;
 
-        $tweets = $this->getTweets($offset, $rowCount);
-
+        $tweets = $this->getTweets($offset, $rowCount, $userFollowingIds);
         $mostLiked = $this->getMostLikedTweets();
-
         $mostCommented = $this->getMostCommentedTweets();
 
         $this->view('tweets/index', [
@@ -177,24 +179,31 @@ class TweetController extends Controller
     /**
      * @param int $offset
      * @param int $rowCount
+     * @param string $userFollowingIds
      * @return array
      */
-    public function getTweets(int $offset, int $rowCount): array
+    public function getTweets(int $offset, int $rowCount, string $userFollowingIds): array
     {
-        return $this->app->builder
-            ->select('tweets', [
-                'tweets.*',
-                'users.username',
-                '(SELECT COUNT(*) FROM likes WHERE likes.tweet_id = tweets.id) as likes_count',
-                '(SELECT COUNT(*) FROM comments WHERE comments.tweet_id = tweets.id) as comments_count'
-            ])
-            ->join('users', 'id', 'tweets', 'user_id')
-            ->leftJoin('likes', 'tweet_id', 'tweets', 'id')
-            ->leftJoin('comments', 'tweet_id', 'tweets', 'id')
-            ->groupBy('tweets.id')
-            ->latest('tweets')
-            ->limit($offset, $rowCount)
-            ->get();
+        return $this->app->builder->raw("
+                SELECT
+                    tweets.*,
+                    users.username,
+                    (SELECT COUNT(*) FROM likes WHERE likes.tweet_id = tweets.id) as likes_count,
+                    (SELECT COUNT(*) FROM comments WHERE comments.tweet_id = tweets.id) as comments_count
+                FROM tweets
+                INNER JOIN users 
+                ON users.id = tweets.user_id
+                LEFT JOIN likes  
+                ON likes.tweet_id = tweets.id
+                LEFT JOIN comments
+                ON comments.tweet_id = tweets.id
+                LEFT JOIN follows
+                ON follows.follower_id = 1
+                GROUP BY tweets.id
+                HAVING tweets.user_id IN ($userFollowingIds)
+                ORDER BY tweets.created_at
+                LIMIT $offset, $rowCount
+            ");
     }
 
     /**
@@ -241,5 +250,29 @@ class TweetController extends Controller
             ->orderBy('comments_count', 'desc')
             ->limit(0, 2)
             ->get();
+    }
+
+    /**
+     * @return string 
+     */
+    public function getUserFollowingIds(): string
+    {
+        $loggedInUserId = $this->app->session->get('user')['id'];
+
+        $followingIds = $this->app->builder
+            ->select('follows', ['following_id'])
+            ->where('follower_id', $loggedInUserId)
+            ->andWhere('status', 'Accepted')
+            ->get();
+
+        array_push($followingIds, ["following_id" => $loggedInUserId]);
+
+        $ids = [];
+
+        foreach ($followingIds as $key => $value) {
+            $ids[] = implode($value);
+        }
+
+        return implode(', ', $ids);
     }
 }

@@ -1,17 +1,17 @@
 ## Tweet app
 
 This project is a simple twitter style application, developed using my [mvc framework](https://github.com/Jordan-Bianco/mvc_framework).<br>
-A user can register on the site and, after verifying their account, start posting their tweets, visit and follow the profiles of other users, comment on other tweets and add or remove likes.
+A user can register on the site and, after verifying their account, start posting their tweets, visit and follow the profiles of other users, comment on other tweets and add or remove likes.<br>
 In the user's dashboard, the user can change their profile information, change their password, or delete their account.
-
-### Tweets
+<br>
+The site is accessible only to registered users
 
 ### Following
 
 After clicking the follow button, a record will be created in the database, with the follow request in pending state.
 If you press the unfollow button, the record in the database is deleted.
 
-> In the following demo, I am logged in as user1, and I am sending a follow request to jedul
+> In the following demo, I am logged in as "user1", and I am sending a follow request to "jedul"
 
 ![Follow preview](gif/follow_demo.gif)
 

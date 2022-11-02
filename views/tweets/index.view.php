@@ -1,7 +1,6 @@
 <?php
 
 use App\core\Application;
-use App\core\Session;
 use App\models\Like;
 
 $user = Application::$app->session->get('user') ?? null;
@@ -15,31 +14,25 @@ $this->title .= ' - Home';
 
         <!-- Sidemenu -->
         <div class="md:w-1/4">
-            <?php if (Session::isLoggedIn()) : ?>
-                <div class="panel">
-                    <div class="flex items-center space-x-3">
-                        <img src="https://eu.ui-avatars.com/api/?name=<?= $user['username'] ?>" alt="user_avatar" class="w-9 h-9 rounded-lg flex-none">
+            <div class="panel">
+                <div class="flex items-center space-x-3">
+                    <img src="https://eu.ui-avatars.com/api/?name=<?= $user['username'] ?>" alt="user_avatar" class="w-9 h-9 rounded-lg flex-none">
 
-                        <div>
-                            <span class="block font-medium text-lime-500"><?= $user['username'] ?></span>
-                            <span class="block text-xs text-zinc-500"><?= $user['email'] ?></span>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 text-xs space-y-2">
-                        <a class="block" href="/<?= $user['username'] ?>">
-                            Dashboard
-                        </a>
-                        <form action="/logout" method="POST">
-                            <button type=" submit">Logout</button>
-                        </form>
+                    <div>
+                        <span class="block font-medium text-lime-500"><?= $user['username'] ?></span>
+                        <span class="block text-xs text-zinc-500"><?= $user['email'] ?></span>
                     </div>
                 </div>
-            <?php else : ?>
-                <div class="panel text-zinc-300 text-xs">
-                    <a class="text-lime-500" href="/login">Log in</a> to start posting your tweets!
+
+                <div class="mt-6 text-xs space-y-2">
+                    <a class="block" href="/<?= $user['username'] ?>">
+                        Dashboard
+                    </a>
+                    <form action="/logout" method="POST">
+                        <button type=" submit">Logout</button>
+                    </form>
                 </div>
-            <?php endif ?>
+            </div>
         </div>
 
         <div class="md:w-2/4">
@@ -54,13 +47,11 @@ $this->title .= ' - Home';
                     </p>
 
                     <footer class="border-t border-zinc-800">
-                        <div class="mt-3 flex items-center <?= Session::isLoggedIn() ? 'justify-between' : 'justify-end' ?>">
-                            <?php if (Session::isLoggedIn()) : ?>
-                                <div class="flex items-center space-x-2">
-                                    <img src="https://eu.ui-avatars.com/api/?name=<?= $user['username'] ?>" alt="user_avatar" class="w-7 h-7 rounded-lg flex-none">
-                                    <span class="font-medium block text-sm"><?= $user['username'] ?></span>
-                                </div>
-                            <?php endif ?>
+                        <div class="mt-3 flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <img src="https://eu.ui-avatars.com/api/?name=<?= $user['username'] ?>" alt="user_avatar" class="w-7 h-7 rounded-lg flex-none">
+                                <span class="font-medium block text-sm"><?= $user['username'] ?></span>
+                            </div>
 
                             <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
                                 Tweet
@@ -81,7 +72,7 @@ $this->title .= ' - Home';
                                     <span class="font-medium block text-sm">@<?= $tweet['username'] ?></span>
                                 </a>
 
-                                <?php if (Session::isLoggedIn() && $tweet['user_id'] === Application::$app->session->get('user')['id']) : ?>
+                                <?php if ($tweet['user_id'] === Application::$app->session->get('user')['id']) : ?>
                                     <div class="flex items-center space-x-1">
                                         <!-- Edit -->
                                         <a href="/tweets/<?= $tweet['id'] ?>/edit">
@@ -114,7 +105,7 @@ $this->title .= ' - Home';
                             </p>
 
                             <footer class="flex items-center space-x-3">
-                                <?php if (!Like::hasBeenLikedBy(Application::$app->session->get('user')['id'] ?? null, $tweet['id'])) : ?>
+                                <?php if (!Like::hasBeenLikedBy(Application::$app->session->get('user')['id'], $tweet['id'])) : ?>
                                     <form action="/like/<?= $tweet['id'] ?>/add" method="POST" class="flex items-center space-x-0.5">
                                         <button type="submit">
                                             <svg class="w-[18px] h-[18px] text-zinc-500 hover:text-red-500 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -235,7 +226,7 @@ $this->title .= ' - Home';
                         </p>
 
                         <footer class="flex items-center space-x-3">
-                            <?php if (!Like::hasBeenLikedBy(Application::$app->session->get('user')['id'] ?? null, $tweet['id'])) : ?>
+                            <?php if (!Like::hasBeenLikedBy(Application::$app->session->get('user')['id'], $tweet['id'])) : ?>
                                 <form action="/like/<?= $tweet['id'] ?>/add" method="POST" class="flex items-center space-x-0.5">
                                     <button type="submit">
                                         <svg class="w-[18px] h-[18px] text-zinc-500 hover:text-red-500 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -305,7 +296,7 @@ $this->title .= ' - Home';
                         </p>
 
                         <footer class="flex items-center space-x-3">
-                            <?php if (!Like::hasBeenLikedBy(Application::$app->session->get('user')['id'] ?? null, $tweet['id'])) : ?>
+                            <?php if (!Like::hasBeenLikedBy(Application::$app->session->get('user')['id'], $tweet['id'])) : ?>
                                 <form action="/like/<?= $tweet['id'] ?>/add" method="POST" class="flex items-center space-x-0.5">
                                     <button type="submit">
                                         <svg class="w-[18px] h-[18px] text-zinc-500 hover:text-red-500 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

@@ -17,10 +17,6 @@ class Follow extends Model
      */
     public static function requestStatus(int $userId): bool|string
     {
-        if (!Application::$app->session->isLoggedIn()) {
-            return false;
-        }
-
         $follow = Application::$app->builder
             ->select('follows')
             ->where('follower_id', Application::$app->session->get('user')['id'])

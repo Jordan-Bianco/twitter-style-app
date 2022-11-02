@@ -12,16 +12,12 @@ class Like extends Model
     }
 
     /**
-     * @param int|null $userId
+     * @param int $userId
      * @param int $resourceId
      * @return bool
      */
-    public static function hasBeenLikedBy(?int $userId, int $resourceId): bool
+    public static function hasBeenLikedBy(int $userId, int $resourceId): bool
     {
-        if (is_null($userId)) {
-            return false;
-        }
-
         $likeInDb = Application::$app->builder
             ->select('likes')
             ->where('user_id', $userId)
@@ -30,5 +26,4 @@ class Like extends Model
 
         return is_null($likeInDb) ? false : true;
     }
-
 }

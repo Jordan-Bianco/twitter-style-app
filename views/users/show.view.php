@@ -1,7 +1,6 @@
 <?php
 
 use App\core\Application;
-use App\core\Session;
 use App\models\Follow;
 use App\models\Like;
 
@@ -9,33 +8,17 @@ use App\models\Like;
 $this->title .= " - " . $user['username'];
 ?>
 <div class="max-w-lg mx-auto">
-    <header class="mb-10 space-y-6">
-        <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <img src="https://eu.ui-avatars.com/api/?name=<?= $user['username'] ?>" alt="user_avatar" class="w-14 h-14 rounded-lg flex-none">
-
-                <div class="space-y-1">
-                    <h2 class="text-base font-medium">
-                        <?= '@' . $user['username'] ?>
-                    </h2>
-                    <span class="block text-xs text-zinc-500">
-                        <?= $user['email'] ?>
-                    </span>
-                    <span class="block text-xs text-lime-500 font-medium">
-                        <?= $user['created_at'] ?>
-                    </span>
-                </div>
-            </div>
+    <header class="mb-6 space-y-6">
+        <div class="flex justify-between items-start">
+            <img src="https://eu.ui-avatars.com/api/?name=<?= $user['username'] ?>" alt="user_avatar" class="w-14 h-14 rounded-lg flex-none">
 
             <div>
-                <?php if (Session::isLoggedIn() && Application::$app->session->get('user')['id'] === $user['id']) : ?>
+                <!-- If you are logged in and it is your profile -->
+                <?php if (Application::$app->session->get('user')['id'] === $user['id']) : ?>
                     <div class="text-xs text-zinc-500">
                         <a href="/settings" class="hover:text-lime-500">Settings</a>
                     </div>
-                <?php endif ?>
-
-                <!-- If you are logged in but not on your profile -->
-                <?php if (Session::isLoggedIn() && Application::$app->session->get('user')['id'] !== $user['id']) : ?>
+                <?php else : ?>
 
                     <?php if (!Follow::requestStatus($user['id'])) : ?>
                         <!-- If the follow request has not been sent -->
@@ -69,22 +52,32 @@ $this->title .= " - " . $user['username'];
             </div>
         </div>
 
+        <div class="space-y-1">
+            <span class="block text-2xl font-medium"><?= $user['username'] ?></span>
+            <span class="block text-sm text-zinc-500">
+                <?= $user['email'] ?>
+            </span>
+            <span class="block text-xs text-lime-500 font-medium">
+                <?= $user['created_at'] ?>
+            </span>
+        </div>
+
         <p class="text-zinc-300">
             <?= $user['bio'] ?? '' ?>
         </p>
 
         <div class="flex items-center justify-around border-b border-t border-zinc-700 py-4">
             <div class="flex flex-col items-center">
+                <span class="block text-lime-500 font-semibold text-base"><?= $user['tweets_count'] ?></span>
                 <span class="text-xs">Tweets</span>
-                <span class="block text-lime-500 font-semibold"><?= $user['tweets_count'] ?></span>
             </div>
             <div class="flex flex-col items-center">
+                <a href="/<?= $user['username'] ?>/followers" class="block text-lime-500 font-semibold text-base"><?= $user['followers_count'] ?></a>
                 <span class="text-xs">Followers</span>
-                <a href="/<?= $user['username'] ?>/followers" class="block text-lime-500 font-semibold"><?= $user['followers_count'] ?></a>
             </div>
             <div class="flex flex-col items-center">
+                <a href="/<?= $user['username'] ?>/following" class="block text-lime-500 font-semibold text-base"><?= $user['following_count'] ?></a>
                 <span class="text-xs">Following</span>
-                <a href="/<?= $user['username'] ?>/following" class="block text-lime-500 font-semibold"><?= $user['following_count'] ?></a>
             </div>
         </div>
     </header>
@@ -99,7 +92,7 @@ $this->title .= " - " . $user['username'];
                             <span class="font-medium block text-sm">@<?= $user['username'] ?></span>
                         </div>
 
-                        <?php if (Session::isLoggedIn() && $tweet['user_id'] === Application::$app->session->get('user')['id']) : ?>
+                        <?php if ($tweet['user_id'] === Application::$app->session->get('user')['id']) : ?>
                             <div class="flex items-center space-x-1">
                                 <!-- Edit -->
                                 <a href="/tweets/<?= $tweet['id'] ?>/edit">
@@ -132,7 +125,7 @@ $this->title .= " - " . $user['username'];
                     </p>
 
                     <footer class="flex items-center space-x-3">
-                        <?php if (!Like::hasBeenLikedBy(Application::$app->session->get('user')['id'] ?? null, $tweet['id'])) : ?>
+                        <?php if (!Like::hasBeenLikedBy(Application::$app->session->get('user')['id'], $tweet['id'])) : ?>
                             <form action="/like/<?= $tweet['id'] ?>/add" method="POST" class="flex items-center space-x-0.5">
                                 <button type="submit">
                                     <svg class="w-[18px] h-[18px] text-zinc-500 hover:text-red-500 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

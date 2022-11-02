@@ -1,7 +1,6 @@
 <?php
 
 use App\core\Application;
-use App\core\Session;
 use App\models\Like;
 ?>
 
@@ -15,7 +14,7 @@ use App\models\Like;
                 <span class="font-medium block text-sm">@<?= $tweet['username'] ?></span>
             </a>
 
-            <?php if (Session::isLoggedIn() && $tweet['user_id'] === Application::$app->session->get('user')['id']) : ?>
+            <?php if ($tweet['user_id'] === Application::$app->session->get('user')['id']) : ?>
                 <div class="flex items-center space-x-1">
                     <!-- Edit -->
                     <a href="/tweets/<?= $tweet['id'] ?>/edit">
@@ -46,7 +45,7 @@ use App\models\Like;
         </p>
 
         <footer class="flex items-center space-x-3">
-            <?php if (!Like::hasBeenLikedBy(Application::$app->session->get('user')['id'] ?? null, $tweet['id'])) : ?>
+            <?php if (!Like::hasBeenLikedBy(Application::$app->session->get('user')['id'], $tweet['id'])) : ?>
                 <form action="/like/<?= $tweet['id'] ?>/add" method="POST" class="flex items-center space-x-0.5">
                     <button type="submit">
                         <svg class="w-[18px] h-[18px] text-zinc-500 hover:text-red-500 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -85,36 +84,30 @@ use App\models\Like;
     </div>
 
     <!-- Form new comment -->
-    <?php if (isset($_SESSION['user'])) : ?>
-        <form action="/tweets/<?= $tweet['id'] ?>/comments" method="POST" class="mt-4">
+    <form action="/tweets/<?= $tweet['id'] ?>/comments" method="POST" class="mt-4">
 
-            <div class="panel">
+        <div class="panel">
 
-                <textarea class="w-full bg-transparent resize-none focus:outline-none text-sm" name="body" placeholder="Reply to @<?= $tweet['username'] ?>" rows="3"></textarea>
+            <textarea class="w-full bg-transparent resize-none focus:outline-none text-sm" name="body" placeholder="Reply to @<?= $tweet['username'] ?>" rows="3"></textarea>
 
-                <p class="text-red-500 font-medium text-xs mb-2">
-                    <?= Application::$app->session->getValidationErrors('body') ?>
-                </p>
+            <p class="text-red-500 font-medium text-xs mb-2">
+                <?= Application::$app->session->getValidationErrors('body') ?>
+            </p>
 
-                <footer class="border-t border-zinc-800">
-                    <div class="mt-3 flex items-center <?= Session::isLoggedIn() ? 'justify-between' : 'justify-end' ?>">
-                        <?php if (Session::isLoggedIn()) : ?>
-                            <div class="flex items-center space-x-2">
-                                <img src="https://eu.ui-avatars.com/api/?name=<?= Application::$app->session->get('user')['username'] ?>" alt="user_avatar" class="w-7 h-7 rounded-lg flex-none">
-                                <span class="font-medium block text-sm"><?= Application::$app->session->get('user')['username'] ?></span>
-                            </div>
-                        <?php endif ?>
-
-                        <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
-                            Comment
-                        </button>
+            <footer class="border-t border-zinc-800">
+                <div class="mt-3 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <img src="https://eu.ui-avatars.com/api/?name=<?= Application::$app->session->get('user')['username'] ?>" alt="user_avatar" class="w-7 h-7 rounded-lg flex-none">
+                        <span class="font-medium block text-sm"><?= Application::$app->session->get('user')['username'] ?></span>
                     </div>
-                </footer>
-            </div>
-        </form>
-    <?php else : ?>
-        <a class="block mt-4 text-zinc-500 text-xs" href="/login"><span class="text-lime-500 font-medium">Log in</span> to reply to <?= $tweet['username'] ?></a>
-    <?php endif ?>
+
+                    <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
+                        Comment
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </form>
 
     <!-- Comments list -->
     <?php if (count($comments) > 0) : ?>
@@ -127,7 +120,7 @@ use App\models\Like;
                             <span class="font-medium block text-sm">@<?= $comment['username'] ?></span>
                         </a>
 
-                        <?php if (Session::isLoggedIn() && $comment['user_id'] === Application::$app->session->get('user')['id']) : ?>
+                        <?php if ($comment['user_id'] === Application::$app->session->get('user')['id']) : ?>
                             <div class="flex items-center space-x-1">
                                 <!-- Edit -->
                                 <a href="/comments/<?= $comment['id'] ?>/edit">

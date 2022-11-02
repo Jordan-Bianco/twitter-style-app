@@ -1,7 +1,6 @@
 <?php
 
 use App\core\Application;
-use App\core\Session;
 
 /** @var $this \app\core\Renderer  */
 $this->title .= ' - Following';
@@ -10,7 +9,7 @@ $this->title .= ' - Following';
 <div class="max-w-lg mx-auto">
     <h2 class="mb-8 font-medium text-xl"><?= $username ?> Following</h2>
 
-    <?php if (Session::isLoggedIn() && Application::$app->session->get('user')['username'] === $username) : ?>
+    <?php if (Application::$app->session->get('user')['username'] === $username) : ?>
         <div class="border-b border-zinc-700 pb-4 mb-8 flex items-center justify-around">
             <a class="<?= isset($_GET['status']) && $_GET['status'] === 'pending' || !isset($_GET['status']) ? 'text-lime-500 font-medium' : 'text-zinc-500' ?> text-xs" href="/<?= $username ?>/following?status=pending">Pending</a>
 
@@ -30,7 +29,7 @@ $this->title .= ' - Following';
             </div>
 
             <div class="space-x-1">
-                <?php if (Session::isLoggedIn() && Application::$app->session->get('user')['id'] === $following['follower_id']) : ?>
+                <?php if (Application::$app->session->get('user')['id'] === $following['follower_id']) : ?>
 
                     <?php if ($following['status'] !== 'Declined') : ?>
                         <form action="/following/<?= $following['id'] ?>/remove" method="post">

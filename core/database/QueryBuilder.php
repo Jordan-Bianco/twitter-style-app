@@ -112,6 +112,23 @@ class QueryBuilder
         return $this;
     }
 
+    // /**
+    //  * @param string $field
+    //  * @param array $array
+    //  * @param string|null $tablePrefix
+    //  * @return QueryBuilder
+    //  */
+    // public function whereIn(string $field, array $array, ?string $tablePrefix = null): QueryBuilder
+    // {
+    //     $array = implode(', ', $array);
+
+    //     $this->query .= " WHERE $tablePrefix$field IN ($array)";
+
+    //     $this->statement = $this->pdo->prepare($this->query);
+
+    //     return $this;
+    // }
+
     /**
      * @param string $field
      * @param string $value
@@ -129,6 +146,24 @@ class QueryBuilder
 
         return $this;
     }
+
+    /**
+     * @param string $field
+     * @param array $array
+     * @param string|null $tablePrefix
+     * @return QueryBuilder
+     */
+    public function havingIn(string $field, array $array, ?string $tablePrefix = null): QueryBuilder
+    {
+        $array = implode(', ', $array);
+
+        $this->query .= " HAVING $tablePrefix$field IN ($array)";
+
+        $this->statement = $this->pdo->prepare($this->query);
+
+        return $this;
+    }
+
 
     public function bindParams(): void
     {
@@ -375,15 +410,17 @@ class QueryBuilder
 
     /**
      * @param string $query
-     * @param array $params
+     * @param array|null $params
      * @return array
      */
-    public function raw(string $query, array $params): array
+    public function raw(string $query, ?array $params = null): array
     {
         $statement = $this->pdo->prepare($query);
 
-        foreach ($params as $key => &$value) {
-            $statement->bindParam($key, $value);
+        if ($params) {
+            foreach ($params as $key => &$value) {
+                $statement->bindParam($key, $value);
+            }
         }
 
         $statement->execute();

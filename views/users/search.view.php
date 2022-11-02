@@ -8,11 +8,11 @@
         <ul>
             <?php foreach ($users as $user) : ?>
 
-                <li class="mb-4">
+                <li class="mb-6">
                     <a href="/<?= $user['username'] ?>" class="flex items-center space-x-2">
                         <img src="https://eu.ui-avatars.com/api/?name=<?= $user['username'] ?>" alt="user_avatar" class="w-9 h-9 rounded-lg flex-none">
                         <div>
-                            <span class="font-medium block text-sm">@<?= $user['username'] ?></span>
+                            <span class="font-medium block text-sm hover:text-lime-500">@<?= $user['username'] ?></span>
                             <span class="block text-xs text-zinc-400"><?= $user['email'] ?></span>
                         </div>
                     </a>

@@ -12,7 +12,3 @@
 [x] accettare richieste di follow
 [x] respingere richiesta di follow 
 [x] rimuovere un follower (accettato) dalla propria lista followers 
-
-
-[] profilo privato? se non ci si segue a vicenda, niente tweet :)
-[] mostrare nella home solo i propri tweets e quelli degli utenti seguiti

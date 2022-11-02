@@ -3,6 +3,7 @@
 namespace App\controllers;
 
 use App\core\exceptions\NotFoundException;
+use App\core\middlewares\AuthMiddleware;
 use App\core\middlewares\SearchMiddleware;
 use App\core\Request;
 
@@ -12,9 +13,9 @@ class UserController extends Controller
     {
         parent::__construct();
 
-        $this->registerMiddleware(new SearchMiddleware([
-            'search'
-        ]));
+        $this->registerMiddleware(new AuthMiddleware(['show', 'search']));
+
+        $this->registerMiddleware(new SearchMiddleware(['search']));
     }
 
     public function show(Request $request)
