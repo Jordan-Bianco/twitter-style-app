@@ -5,6 +5,9 @@ use App\core\Session;
 use App\models\Like;
 
 $user = Application::$app->session->get('user') ?? null;
+
+/** @var $this \app\core\Renderer  */
+$this->title .= ' - Home';
 ?>
 
 <div>
@@ -34,17 +37,17 @@ $user = Application::$app->session->get('user') ?? null;
                 </div>
             <?php else : ?>
                 <div class="panel text-zinc-300 text-xs">
-                    <a class="text-lime-500" href="/login">Accedi</a> per iniziare a pubblicare i tuoi tweets!
+                    <a class="text-lime-500" href="/login">Log in</a> to start posting your tweets!
                 </div>
             <?php endif ?>
         </div>
 
         <div class="md:w-2/4">
-            <!-- Form nuovo tweet -->
+            <!-- Form create tweet -->
             <form action="/tweets" method="POST">
 
                 <div class="panel">
-                    <textarea class="w-full resize-none focus:outline-none text-sm bg-transparent" name="body" placeholder="A che cosa stai pensando?" rows="4"><?= Application::$app->session->getOldData('body') ?></textarea>
+                    <textarea class="w-full resize-none focus:outline-none text-sm bg-transparent" name="body" placeholder="What are you thinking about?" rows="4"><?= Application::$app->session->getOldData('body') ?></textarea>
 
                     <p class="text-red-500 font-medium text-xs mb-2">
                         <?= Application::$app->session->getValidationErrors('body') ?>
@@ -67,7 +70,7 @@ $user = Application::$app->session->get('user') ?? null;
                 </div>
             </form>
 
-            <!-- Lista tweets -->
+            <!-- Tweets list -->
             <?php if ($tweets) : ?>
                 <div class="mt-10">
                     <?php foreach ($tweets as $tweet) : ?>
@@ -151,7 +154,7 @@ $user = Application::$app->session->get('user') ?? null;
                     <?php endforeach ?>
                 </div>
 
-                <!-- Paginazione -->
+                <!-- Pagination -->
                 <?php if ($totalPages > 1) : ?>
                     <div class="flex items-center justify-between mt-8">
                         <div class="flex items-center justify-between space-x-2">
@@ -185,31 +188,31 @@ $user = Application::$app->session->get('user') ?? null;
 
                         <div>
                             <span class="text-xs text-zinc-500">
-                                Pagina <?= $currentPage ?> di
+                                Page <?= $currentPage ?> of
                                 <?= $totalPages ?>
                             </span>
                             <span class="text-xs text-zinc-500">&bull;</span>
                             <span class="text-xs text-zinc-500">
-                                <?= $total ?> risultati
+                                <?= $total ?> results
                             </span>
 
                         </div>
                     </div>
                 <?php endif ?>
-                <!-- Fine paginazione -->
+                <!-- End pagination -->
 
             <?php endif ?>
         </div>
 
         <div class="md:w-1/4 space-y-8">
-            <!-- Tweet con più like -->
+            <!-- Top rated tweets -->
             <section>
                 <div class="flex items-center space-x-2 mb-4">
                     <svg class="w-[18px] h-[18px] text-lime-500 cursor-pointer" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
                         </path>
                     </svg>
-                    <h4 class="font-medium text-sm">Tweet più votati</h4>
+                    <h4 class="font-medium text-sm">Top rated Tweets</h4>
                 </div>
 
                 <?php foreach ($mostLiked as $tweet) : ?>
@@ -258,7 +261,6 @@ $user = Application::$app->session->get('user') ?? null;
                                 </form>
                             <?php endif ?>
 
-
                             <div class="flex items-center space-x-0.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle w-4 h-4 text-zinc-500">
                                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
@@ -273,14 +275,14 @@ $user = Application::$app->session->get('user') ?? null;
                 <?php endforeach ?>
             </section>
 
-            <!-- Tweet con più commenti -->
+            <!-- Most commented tweets -->
             <section>
                 <div class="flex items-center space-x-2 mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle w-[18px] h-[18px] text-lime-500">
                         <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
                         </path>
                     </svg>
-                    <h4 class="font-medium text-sm">Tweet più commentati</h4>
+                    <h4 class="font-medium text-sm">Most commented tweets</h4>
                 </div>
 
                 <?php foreach ($mostCommented as $tweet) : ?>
@@ -328,7 +330,6 @@ $user = Application::$app->session->get('user') ?? null;
                                     </span>
                                 </form>
                             <?php endif ?>
-
 
                             <div class="flex items-center space-x-0.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-circle w-4 h-4 text-zinc-500">

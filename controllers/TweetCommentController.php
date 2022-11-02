@@ -58,7 +58,7 @@ class TweetCommentController extends Controller
             ->update('comments', $validated, $comment['id']);
 
         $this->app->response->redirect('/comments/' . $comment['id'] . '/edit')
-            ->with('success', 'Commento modificato.');
+            ->with('success', 'Comment updated');
     }
 
     public function store(Request $request)
@@ -94,6 +94,6 @@ class TweetCommentController extends Controller
         $this->app->builder->delete('comments', 'id', $comment['id']);
 
         $this->app->response->redirect('/tweets/' . $comment['tweet_id'])
-            ->with('success', 'Commento eliminato.');
+            ->with('success', 'Comment deleted');
     }
 }

@@ -3,8 +3,8 @@
 use App\core\Application;
 use App\core\Session;
 use App\models\Like;
-
 ?>
+
 <div class="max-w-lg mx-auto">
 
     <!-- Tweet -->
@@ -84,13 +84,13 @@ use App\models\Like;
         </footer>
     </div>
 
-    <!-- Form nuovo commento -->
+    <!-- Form new comment -->
     <?php if (isset($_SESSION['user'])) : ?>
         <form action="/tweets/<?= $tweet['id'] ?>/comments" method="POST" class="mt-4">
 
             <div class="panel">
 
-                <textarea class="w-full bg-transparent resize-none focus:outline-none text-sm" name="body" placeholder="Rispondi a <?= $tweet['username'] ?>" rows="3"></textarea>
+                <textarea class="w-full bg-transparent resize-none focus:outline-none text-sm" name="body" placeholder="Reply to @<?= $tweet['username'] ?>" rows="3"></textarea>
 
                 <p class="text-red-500 font-medium text-xs mb-2">
                     <?= Application::$app->session->getValidationErrors('body') ?>
@@ -106,20 +106,17 @@ use App\models\Like;
                         <?php endif ?>
 
                         <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
-                            Rispondi
+                            Comment
                         </button>
                     </div>
                 </footer>
             </div>
         </form>
     <?php else : ?>
-        <a class="block mt-4 text-zinc-500 text-xs" href="/login"><span class="text-lime-500 font-medium">Accedi</span> per
-            rispondere a
-            <?= $tweet['username'] ?>
-        </a>
+        <a class="block mt-4 text-zinc-500 text-xs" href="/login"><span class="text-lime-500 font-medium">Log in</span> to reply to <?= $tweet['username'] ?></a>
     <?php endif ?>
 
-    <!-- Lista risposte -->
+    <!-- Comments list -->
     <?php if (count($comments) > 0) : ?>
         <div class="mt-8">
             <?php foreach ($comments as $comment) : ?>
@@ -164,7 +161,7 @@ use App\models\Like;
             <?php endforeach ?>
         </div>
 
-        <!-- Paginazione -->
+        <!-- Pagination -->
         <?php if ($totalPages > 1) : ?>
             <div class="flex items-center justify-between mt-8">
                 <div class="flex items-center justify-between space-x-2">
@@ -198,17 +195,17 @@ use App\models\Like;
 
                 <div>
                     <span class="text-xs text-zinc-500">
-                        Pagina <?= $currentPage ?> di
+                        Page <?= $currentPage ?> of
                         <?= $totalPages ?>
                     </span>
                     <span class="text-xs text-zinc-500">&bull;</span>
                     <span class="text-xs text-zinc-500">
-                        <?= $total ?> risultati
+                        <?= $total ?> results
                     </span>
                 </div>
             </div>
         <?php endif ?>
-        <!-- Fine Paginazione -->
+        <!-- End Pagination -->
 
     <?php endif ?>
 </div>

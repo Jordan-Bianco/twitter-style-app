@@ -53,6 +53,6 @@ class ResetPasswordController extends Controller
             );
 
         $this->app->response->redirect('/login')
-            ->with('success', 'Password resettata correttamente.');
+            ->with('success', 'Password reset successfully');
     }
 }

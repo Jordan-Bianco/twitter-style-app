@@ -94,7 +94,7 @@ class QueryBuilder
      * @param string $subQuery
      * @param string $value
      * @param string $condition
-     * @return 
+     * @return QueryBuilder
      */
     public function whereSubquery(string $field, string $subQuery, string $value, ?string $condition = '='): QueryBuilder
     {
@@ -105,7 +105,7 @@ class QueryBuilder
         $statement->execute();
         $subQueryResult = $statement->fetchColumn();
 
-        $this->query .= " WHERE $field = $subQueryResult";
+        $this->query .= " WHERE $field $condition $subQueryResult";
 
         $this->statement = $this->pdo->prepare($this->query);
 

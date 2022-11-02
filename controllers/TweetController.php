@@ -148,7 +148,7 @@ class TweetController extends Controller
             ->update('tweets', $validated, $tweet['id']);
 
         $this->app->response->redirect('/tweets/' . $tweet['id'] . '/edit')
-            ->with('success', 'Tweet modificato.');
+            ->with('success', 'Tweet updated');
     }
 
     public function destroy(Request $request)
@@ -166,7 +166,7 @@ class TweetController extends Controller
 
         if (!str_contains($_SERVER['HTTP_REFERER'], 'tweets')) {
             $this->app->response->redirect($_SERVER['HTTP_REFERER'])
-                ->with('success', 'Tweet eliminato.');
+                ->with('success', 'Tweet deleted');
             return;
         }
 

@@ -5,6 +5,8 @@ use App\core\Session;
 use App\models\Follow;
 use App\models\Like;
 
+/** @var $this \app\core\Renderer  */
+$this->title .= " - " . $user['username'];
 ?>
 <div class="max-w-lg mx-auto">
     <header class="mb-10 space-y-6">
@@ -28,34 +30,34 @@ use App\models\Like;
             <div>
                 <?php if (Session::isLoggedIn() && Application::$app->session->get('user')['id'] === $user['id']) : ?>
                     <div class="text-xs text-zinc-500">
-                        <a href="/settings" class="hover:text-lime-500">Impostazioni</a>
+                        <a href="/settings" class="hover:text-lime-500">Settings</a>
                     </div>
                 <?php endif ?>
 
-                <!-- Se si è loggati e non si è sul proprio profilo -->
+                <!-- If you are logged in but not on your profile -->
                 <?php if (Session::isLoggedIn() && Application::$app->session->get('user')['id'] !== $user['id']) : ?>
 
                     <?php if (!Follow::requestStatus($user['id'])) : ?>
-                        <!-- Se non è stata inviata la richiesta di follow -->
+                        <!-- If the follow request has not been sent -->
                         <form action="/users/<?= $user['id'] ?>/follow" method="post">
                             <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
                                 Follow
                             </button>
                         </form>
                     <?php elseif (Follow::requestStatus($user['id']) === 'Pending') : ?>
-                        <!-- Se è stata inviata, ed è in attesa -->
+                        <!-- If it has been sent, and it is pending -->
                         <form action="/users/<?= $user['id'] ?>/unfollow" method="post">
                             <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
                                 Request sent
                             </button>
                         </form>
                     <?php elseif (Follow::requestStatus($user['id']) === 'Declined') : ?>
-                        <!-- Se è stata inviata, ed è stata rifiutata -->
+                        <!-- If it has been sent, and it has been rejected -->
                         <span class="block cursor-default tracking-wide bg-zinc-400 focus:outline-none text-white px-5 py-1.5 rounded-full text-xs">
                             Request declined
                         </span>
                     <?php else : ?>
-                        <!-- Se è stata inviata ed è stata accettata -->
+                        <!-- If it has been sent and accepted -->
                         <form action="/users/<?= $user['id'] ?>/unfollow" method="post">
                             <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
                                 Unfollow
@@ -170,7 +172,7 @@ use App\models\Like;
             <?php endforeach ?>
         </div>
 
-        <!-- Paginazione -->
+        <!-- Pagination -->
         <?php if ($totalPages > 1) : ?>
             <div class="flex items-center justify-between mt-8">
                 <div class="flex items-center justify-between space-x-2">
@@ -205,18 +207,18 @@ use App\models\Like;
 
                 <div>
                     <span class="text-xs text-zinc-500">
-                        Pagina <?= $currentPage ?> di
+                        Page <?= $currentPage ?> of
                         <?= $totalPages ?>
                     </span>
                     <span class="text-xs text-zinc-500">&bull;</span>
                     <span class="text-xs text-zinc-500">
-                        <?= $total ?> risultati
+                        <?= $total ?> results
                     </span>
 
                 </div>
             </div>
         <?php endif ?>
-        <!-- Fine paginazione -->
+        <!-- End pagination -->
 
     <?php endif ?>
 </div>

@@ -36,7 +36,7 @@ class LoginController extends Controller
 
         if (!$user) {
             $this->app->response->redirect('/login')
-                ->withValidationErrors(['email' => 'Credenziali non corrette.'])
+                ->withValidationErrors(['email' => 'Incorrect credentials'])
                 ->withOldData($validated);
 
             return;
@@ -44,7 +44,7 @@ class LoginController extends Controller
 
         if (!Auth::isVerified($user)) {
             $this->app->response->redirect('/login')
-                ->withValidationErrors(['email' => 'Sembra che tu non abbia verificato il tuo account. Verifica il tuo account per accedere.'])
+                ->withValidationErrors(['email' => "It looks like you haven't verified your account. Verify your account to log in"])
                 ->withOldData($validated);
 
             return;
@@ -53,7 +53,7 @@ class LoginController extends Controller
         $this->app->session->set('user', $user);
 
         $this->app->response->redirect('/')
-            ->with('success', "Bentornato <strong> " . $user['username'] . "</strong>");
+            ->with('success', "Welcome back <strong> " . $user['username'] . "</strong>");
     }
 
     public function logout()
@@ -61,6 +61,6 @@ class LoginController extends Controller
         $this->app->session->destroySession();
 
         $this->app->response->redirect('/login')
-            ->with('success', 'Ci vediamo!');
+            ->with('success', 'See you!');
     }
 }

@@ -47,24 +47,22 @@ class FollowingController extends Controller
      */
     protected function setFollowFilterStatus(string $username): string
     {
-        /** Prendo dalla query string il parametro status, per filtrare le richieste di follow */
+        /** Take the status parameter from the query string, to filter the follow requests */
         $status = 'pending';
 
         if (isset($_GET['status'])) {
             $status = $_GET['status'];
 
-            /** Se il parametro è diverso da uno di questi 3 status, setto status come pending  */
+            /** If the parameter is different from one of these 3 statuses, set status as pending  */
             if (!in_array($status, ['pending', 'accepted', 'declined'])) {
                 $status = 'pending';
             }
         }
 
-        /** Se non c'è un utente loggato, mostro solo le richiest di follow accettate */
+        /** If there is no user logged in, only show accepted follow requests */
         if (!$this->app->session->get('user')) {
             $status = 'accepted';
-            /** Altrimenti se c'è un utente loggato, ma mi trovo in un profilo diverso da quello dell'utente loggato,
-             * mostro sempre e solo le richieste accettate, a prescindere dalla query string
-             **/
+            /** If there is a logged in user, but I am in a different profile from that of the logged in user, I always show only the accepted requests, regardless of the query string */
         } else if ($username !== $this->app->session->get('user')['username']) {
             $status = 'accepted';
         }

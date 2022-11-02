@@ -2,7 +2,7 @@
     <?php if (count($users) >= 1) : ?>
 
         <span class="block mb-6 text-zinc-500">
-            <?= count($users) ?> risultati di ricerca per "<?= $_GET['search'] ?>"
+            <?= count($users) ?> search results for "<?= $_GET['search'] ?>"
         </span>
 
         <ul>
@@ -16,15 +16,11 @@
                             <span class="block text-xs text-zinc-400"><?= $user['email'] ?></span>
                         </div>
                     </a>
-
-                    <!-- <a href="/<?= $user['username'] ?>" class="font-medium text-sm">
-                        <?= '@' . $user['username'] ?>
-                    </a> -->
                 </li>
 
             <?php endforeach ?>
         </ul>
     <?php else : ?>
-        Nessun risultato per "<?= $_GET['search'] ?>"
+        No results for "<?= $_GET['search'] ?>"
     <?php endif ?>
 </div>

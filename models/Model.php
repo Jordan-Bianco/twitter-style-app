@@ -42,7 +42,7 @@ abstract class Model
     }
 
     /**
-     * Check che i campi inviati dal form, siano gli stessi presenti nell'array fillables del model (se presente)
+     * Check that the fields sent through the form are the same as those present in the fillables array of the model (if present)
      * 
      * @param array $data
      * @return void

@@ -8,7 +8,6 @@ $this->title .= ' - Error';
     Ops.. something went wrong!
 
     <span class="font-semibold">
-        <?= $error->getCode() . ' - ' . $error->getMessage() . ' in file ' . $error->getFile() . ' on line ' .
-            $error->getLine() ?>
+        <?= $error->getCode() . ' - ' . $error->getMessage() ?>
     </span>
 </div>

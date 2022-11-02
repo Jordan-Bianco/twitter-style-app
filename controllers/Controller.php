@@ -25,7 +25,7 @@ class Controller
     }
 
     /**
-     * Controllo che l'ID dell'utente loggato sia lo stesso ID dell'autore della risorsa che si intende modificare.
+     * Check that the ID of the logged in user is the same ID as the author of the resource you intend to modify.
      * 
      * @param int $author
      * @return bool

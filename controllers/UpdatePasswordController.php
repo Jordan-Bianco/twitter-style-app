@@ -3,7 +3,6 @@
 namespace App\controllers;
 
 use App\core\Auth;
-use App\core\exceptions\ForbiddenException;
 use App\core\middlewares\AuthMiddleware;
 use App\core\Request;
 
@@ -34,7 +33,7 @@ class UpdatePasswordController extends Controller
 
         if (!password_verify($validated['current_password'], $user['password'])) {
             return $this->app->response->redirect('/settings')
-                ->withValidationErrors(['current_password' => 'La tua attuale password non coincide con quella indicata.']);
+                ->withValidationErrors(['current_password' => 'Your current password does not match the one you entered']);
         }
 
         $password = Auth::hash($validated['new_password']);
@@ -42,6 +41,6 @@ class UpdatePasswordController extends Controller
         $this->app->builder->update('users', ['password' => $password], $user['id']);
 
         return $this->app->response->redirect('/settings')
-            ->with('success', 'Hai aggiornato la tua password!');
+            ->with('success', 'You have updated your password!');
     }
 }

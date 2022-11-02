@@ -8,7 +8,7 @@ $this->title .= ' - Password reset';
 
 $queryString = $_SERVER['QUERY_STRING'] ?? false;
 
-/** Se la query string non è presente, o non sono presenti i parametri id e token, redirect home */
+/** If the query string is not present, or the id and token parameters are not present, redirect home */
 if (!$queryString || !isset($_GET['id']) || !isset($_GET['token'])) {
     Application::$app->response->redirect('/');
     return;
@@ -24,7 +24,7 @@ $user = Application::$app->builder
     ->where('id', $id)
     ->first();
 
-/** Se il token nella url non corrisponde al token assegnato all'utente, redirect home */
+/** If the token in the url does not match the token assigned to the user, redirect home */
 if ($user['token'] !== $token) {
     Application::$app->response->redirect('/');
     return;
@@ -47,18 +47,18 @@ if ($user['token'] !== $token) {
                 <label for="password" class="block mb-1 text-zinc-300 text-xs">
                     Password
                 </label>
-                <input name="password" placeholder="Inserisci la tua nuova password" type="password" class="w-full text-xs px-4 py-3 bg-zinc-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-700 transition">
+                <input name="password" placeholder="Enter your new password" type="password" class="w-full text-xs px-4 py-3 bg-zinc-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-700 transition">
             </div>
 
             <div class="mb-8">
                 <label for="password_confirm" class="block mb-1 text-zinc-300 text-xs">
-                    Conferma password
+                    Confirm password
                 </label>
-                <input name="password_confirm" placeholder="Conferma la nuova password" type="password" class="w-full text-xs px-4 py-3 bg-zinc-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-700 transition">
+                <input name="password_confirm" placeholder="Confirm your password" type="password" class="w-full text-xs px-4 py-3 bg-zinc-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-700 transition">
             </div>
 
             <button type="submit" class="tracking-wide w-full bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white p-3 rounded-lg text-xs">
-                Resetta password
+                Reset password
             </button>
         </form>
     </section>

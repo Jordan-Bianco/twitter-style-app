@@ -16,7 +16,3 @@
 
 [] profilo privato? se non ci si segue a vicenda, niente tweet :)
 [] mostrare nella home solo i propri tweets e quelli degli utenti seguiti
-
-
-aggiungere al baseframework il docblock del metodo andHWere
-e il metodo wheresubquery

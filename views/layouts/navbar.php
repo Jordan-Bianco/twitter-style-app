@@ -17,7 +17,7 @@ use App\core\Session;
 
     <div class="md:w-2/4 w-full">
         <form action="/users" method="get" class="relative">
-            <input type="text" placeholder="Cerca utenti per email o username!" name="search" class="w-full text-xs pr-4 pl-12 py-3 panel rounded-full focus:outline-none focus:ring-2 focus:ring-zinc-600 transition">
+            <input type="text" placeholder="Search users by email or username..." name="search" class="w-full text-xs pr-4 pl-12 py-3 panel rounded-full focus:outline-none focus:ring-2 focus:ring-zinc-600 transition">
             <svg class="w-5 h-5 text-lime-500 absolute top-2.5 left-3.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
             </svg>
@@ -27,8 +27,8 @@ use App\core\Session;
     <div class="md:w-1/4 max-w-max flex items-center justify-end space-x-2">
         <?php if (!Session::isLoggedIn()) : ?>
             <div class="flex items-center space-x-2">
-                <a href="/login" class="block hover:text-lime-500 <?= Application::$app->request->getUri() === '/login' ? 'text-lime-500' : '' ?>">Login</a>
-                <a href="/register" class="block hover:text-lime-500 <?= Application::$app->request->getUri() == '/register' ? 'text-lime-500' : '' ?>">Registrati</a>
+                <a href="/login" class="block hover:text-lime-500 <?= Application::$app->request->getUri() === '/login' ? 'text-lime-500' : '' ?>">Log in</a>
+                <a href="/register" class="block hover:text-lime-500 <?= Application::$app->request->getUri() == '/register' ? 'text-lime-500' : '' ?>">Sign in</a>
             </div>
         <?php else : ?>
             <a class="hover:text-lime-500" href="/<?= Application::$app->session->get('user')['username'] ?>">

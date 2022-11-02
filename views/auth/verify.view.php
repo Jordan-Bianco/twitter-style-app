@@ -3,7 +3,7 @@
 use App\core\Application;
 
 $queryString = $_SERVER['QUERY_STRING'] ?? false;
-/** Se la query string non è presente, o non sono presenti i parametri id e token, redirect home */
+/** If the query string is not present, or the id and token parameters are not present, redirect home */
 if (!$queryString || !isset($_GET['id']) || !isset($_GET['token'])) {
     Application::$app->response->redirect('/');
     return;
@@ -19,7 +19,7 @@ $user = Application::$app->builder
     ->where('id', $id)
     ->first();
 
-/** Se il token nella url non corrisponde al token assegnato all'utente, redirect home */
+/** If the token in the url does not match the token assigned to the user, redirect home */
 if ($user['token'] !== $token) {
     Application::$app->response->redirect('/');
     return;
@@ -29,5 +29,5 @@ $update = Application::$app->builder->update('users', ['verified' => true], $use
 
 if ($update) {
     Application::$app->response->redirect('/login')
-        ->with('success', 'Grazie per aver confermato la tua email.');
+        ->with('success', 'Thank you for confirming your email');
 }

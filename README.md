@@ -1,8 +1,10 @@
 ## Tweet app
 
 This project is a simple twitter style application, developed using my [mvc framework](https://github.com/Jordan-Bianco/mvc_framework).<br>
-A user can register on the site and, after verifying their account, start posting their tweets, visit other users' profiles, comment on other tweets and add or remove likes. <br>
-In the user's dashboard, the user can change their profile information, change their password or delete their account.
+A user can register on the site and, after verifying their account, start posting their tweets, visit and follow the profiles of other users, comment on other tweets and add or remove likes.
+In the user's dashboard, the user can change their profile information, change their password, or delete their account.
+
+### Tweets
 
 ### Following
 

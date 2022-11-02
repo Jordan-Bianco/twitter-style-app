@@ -36,7 +36,7 @@ class DashboardController extends Controller
         $this->updateSessionUser($user['id']);
 
         $this->app->response->redirect('/settings')
-            ->with('success', 'Hai aggiornato il tuo profilo!');
+            ->with('success', 'You have updated your profile!');
     }
 
     public function destroy(Request $request)

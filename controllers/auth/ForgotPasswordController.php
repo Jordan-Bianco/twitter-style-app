@@ -38,6 +38,6 @@ class ForgotPasswordController extends Controller
         Auth::sendResetPasswordMail($user);
 
         $this->app->response->redirect('/forgot-password')
-            ->with('success', 'Ti è stata inviata una mail per resettare la tua password.');
+            ->with('success', 'An email has been sent to you to reset your password');
     }
 }
