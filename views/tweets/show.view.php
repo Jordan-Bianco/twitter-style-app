@@ -14,7 +14,7 @@ use App\models\Like;
                 <span class="font-medium block text-sm">@<?= $tweet['username'] ?></span>
             </a>
 
-            <?php if ($tweet['user_id'] === Application::$app->session->get('user')['id']) : ?>
+            <?php if ($tweet['user_id'] === Application::$app->session->authId()) : ?>
                 <div class="flex items-center space-x-1">
                     <!-- Edit -->
                     <a href="/tweets/<?= $tweet['id'] ?>/edit">
@@ -45,7 +45,7 @@ use App\models\Like;
         </p>
 
         <footer class="flex items-center space-x-3">
-            <?php if (!Like::hasBeenLikedBy(Application::$app->session->get('user')['id'], $tweet['id'])) : ?>
+            <?php if (!Like::hasBeenLikedBy(Application::$app->session->authId(), $tweet['id'])) : ?>
                 <form action="/like/<?= $tweet['id'] ?>/add" method="POST" class="flex items-center space-x-0.5">
                     <button type="submit">
                         <svg class="w-[18px] h-[18px] text-zinc-500 hover:text-red-500 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +120,7 @@ use App\models\Like;
                             <span class="font-medium block text-sm">@<?= $comment['username'] ?></span>
                         </a>
 
-                        <?php if ($comment['user_id'] === Application::$app->session->get('user')['id']) : ?>
+                        <?php if ($comment['user_id'] === Application::$app->session->authId()) : ?>
                             <div class="flex items-center space-x-1">
                                 <!-- Edit -->
                                 <a href="/comments/<?= $comment['id'] ?>/edit">

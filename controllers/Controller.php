@@ -32,7 +32,7 @@ class Controller
      */
     public function isAuthorized(int $authorId): bool
     {
-        return (int) $this->app->session->get('user')['id'] === (int) $authorId;
+        return (int) $this->app->session->authId() === (int) $authorId;
     }
 
     /**

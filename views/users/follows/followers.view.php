@@ -20,31 +20,36 @@ $this->title .= ' - Followers';
     <?php endif ?>
 
     <?php foreach ($followers as $follower) : ?>
-        <div class="flex items-start justify-between mb-4">
+        <div class="flex items-center justify-between panel mb-4">
             <div class="flex items-center space-x-4">
-                <img src="https://eu.ui-avatars.com/api/?name=<?= $follower['username'] ?>" alt="user_avatar" class="w-8 h-8 rounded-lg flex-none">
+                <img src="https://eu.ui-avatars.com/api/?name=<?= $follower['username'] ?>" alt="user_avatar" class="w-9 h-9 rounded-lg flex-none">
                 <div>
                     <a href="/<?= $follower['username'] ?>" class="hover:text-lime-500">@<?= $follower['username'] ?></a>
+
+                    <!-- If I am in my profile, and the request is in Pending status, display the timestamp of when the request arrived -->
+                    <?php if (Application::$app->session->authId() === $follower['following_id'] && $follower['status'] === 'Pending') : ?>
+                        <span class="block text-xs text-zinc-500">received on <?= $follower['created_at']  ?></span>
+                    <?php endif ?>
                 </div>
             </div>
 
             <div class="space-x-1">
-                <?php if (Application::$app->session->get('user')['id'] === $follower['following_id']) : ?>
+                <?php if (Application::$app->session->authId() === $follower['following_id']) : ?>
 
                     <?php if ($follower['status'] !== 'Declined') : ?>
-                        <!-- If the request is in Pending status, I can accept or decline -->
+                        <!-- If the request is in Pending status, it can be accepted or declined -->
                         <?php if ($follower['status'] === 'Pending') : ?>
-                            <div class="flex items-center space-x-2">
+                            <div class="flex items-center space-x-2 text-xs">
                                 <form action="/followers/<?= $follower['id'] ?>/accept" method="post">
                                     <footer class="flex justify-end">
-                                        <button class="hover:text-lime-500" type="submit">
+                                        <button class="border border-zinc-700 hover:bg-zinc-700 transition px-2 py-1.5 rounded-lg" type="submit">
                                             Accept
                                         </button>
                                     </footer>
                                 </form>
                                 <form action="/followers/<?= $follower['id'] ?>/decline" method="post">
                                     <footer class="flex justify-end">
-                                        <button class="hover:text-red-500" type="submit">
+                                        <button class="border border-zinc-700 hover:bg-zinc-700 transition px-2 py-1.5 rounded-lg" type="submit">
                                             Decline
                                         </button>
                                     </footer>
@@ -54,7 +59,7 @@ $this->title .= ' - Followers';
                             <!-- If it's in the Accepted status, I can remove the follow -->
                             <form action="/followers/<?= $follower['id'] ?>/remove" method="post">
                                 <footer class="flex justify-end">
-                                    <button class="hover:text-red-500" type="submit">
+                                    <button class="text-xs border border-zinc-700 hover:bg-zinc-700 transition px-2 py-1.5 rounded-lg" type="submit">
                                         Remove
                                     </button>
                                 </footer>

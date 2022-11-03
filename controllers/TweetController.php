@@ -38,11 +38,13 @@ class TweetController extends Controller
         $tweets = $this->getTweets($offset, $rowCount, $userFollowingIds);
         $mostLiked = $this->getMostLikedTweets();
         $mostCommented = $this->getMostCommentedTweets();
+        $followRequests = $this->getFollowRequests();
 
         $this->view('tweets/index', [
             'tweets' => $tweets,
             'mostLiked' => $mostLiked,
             'mostCommented' => $mostCommented,
+            'followRequests' => $followRequests,
             'total' => $total,
             'totalPages' => $totalPages,
             'currentPage' => $currentPage,
@@ -57,7 +59,7 @@ class TweetController extends Controller
 
         $tweet = new Tweet();
         $tweet->create([
-            'user_id' => $this->app->session->get('user')['id'],
+            'user_id' => $this->app->session->authId(),
             'body' => $validated['body']
         ]);
 
@@ -257,7 +259,7 @@ class TweetController extends Controller
      */
     public function getUserFollowingIds(): string
     {
-        $loggedInUserId = $this->app->session->get('user')['id'];
+        $loggedInUserId = $this->app->session->authId();
 
         $followingIds = $this->app->builder
             ->select('follows', ['following_id'])
@@ -274,5 +276,23 @@ class TweetController extends Controller
         }
 
         return implode(', ', $ids);
+    }
+
+    /**
+     * @return array 
+     */
+    public function getFollowRequests(): array
+    {
+        return $this->app->builder
+            ->select('follows', [
+                'follows.*',
+                'users.username'
+            ])
+            ->join('users', 'id', 'follows', 'follower_id')
+            ->where('following_id', $this->app->session->authId())
+            ->andWhere('status', 'Pending')
+            ->latest('follows')
+            ->limit(0, 2)
+            ->get();
     }
 }

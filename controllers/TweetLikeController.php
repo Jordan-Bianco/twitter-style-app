@@ -22,11 +22,10 @@ class TweetLikeController extends Controller
     public function store(Request $request)
     {
         $tweetId = $request->routeParams['id'];
-        $userId = $this->app->session->get('user')['id'];
 
         $this->app->builder->insert('likes', [
             'tweet_id' => $tweetId,
-            'user_id' => $userId,
+            'user_id' => $this->app->session->authId(),
         ]);
 
         $this->app->response->redirect($_SERVER['HTTP_REFERER']);
@@ -35,11 +34,10 @@ class TweetLikeController extends Controller
     public function destroy(Request $request)
     {
         $tweetId = $request->routeParams['id'];
-        $userId = $this->app->session->get('user')['id'];
 
         $likeInDb = $this->app->builder
             ->select('likes')
-            ->where('user_id', $userId)
+            ->where('user_id', $this->app->session->authId())
             ->andWhere('tweet_id', $tweetId)
             ->first();
 

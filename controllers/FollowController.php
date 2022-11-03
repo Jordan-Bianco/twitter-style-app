@@ -20,7 +20,7 @@ class FollowController extends Controller
     public function store(Request $request)
     {
         $this->app->builder->insert('follows', [
-            'follower_id' => $this->app->session->get('user')['id'],
+            'follower_id' => $this->app->session->authId(),
             'following_id' => $request->routeParams['id']
         ]);
 
@@ -31,7 +31,7 @@ class FollowController extends Controller
     {
         $follow = $this->app->builder
             ->select('follows')
-            ->where('follower_id', $this->app->session->get('user')['id'])
+            ->where('follower_id', $this->app->session->authId())
             ->andWhere('following_id', $request->routeParams['id'])
             ->first();
 

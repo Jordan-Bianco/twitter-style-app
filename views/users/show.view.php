@@ -14,7 +14,7 @@ $this->title .= " - " . $user['username'];
 
             <div>
                 <!-- If you are logged in and it is your profile -->
-                <?php if (Application::$app->session->get('user')['id'] === $user['id']) : ?>
+                <?php if (Application::$app->session->authId() === $user['id']) : ?>
                     <div class="text-xs text-zinc-500">
                         <a href="/settings" class="hover:text-lime-500">Settings</a>
                     </div>
@@ -92,7 +92,7 @@ $this->title .= " - " . $user['username'];
                             <span class="font-medium block text-sm">@<?= $user['username'] ?></span>
                         </div>
 
-                        <?php if ($tweet['user_id'] === Application::$app->session->get('user')['id']) : ?>
+                        <?php if ($tweet['user_id'] === Application::$app->session->authId()) : ?>
                             <div class="flex items-center space-x-1">
                                 <!-- Edit -->
                                 <a href="/tweets/<?= $tweet['id'] ?>/edit">
@@ -125,7 +125,7 @@ $this->title .= " - " . $user['username'];
                     </p>
 
                     <footer class="flex items-center space-x-3">
-                        <?php if (!Like::hasBeenLikedBy(Application::$app->session->get('user')['id'], $tweet['id'])) : ?>
+                        <?php if (!Like::hasBeenLikedBy(Application::$app->session->authId(), $tweet['id'])) : ?>
                             <form action="/like/<?= $tweet['id'] ?>/add" method="POST" class="flex items-center space-x-0.5">
                                 <button type="submit">
                                     <svg class="w-[18px] h-[18px] text-zinc-500 hover:text-red-500 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

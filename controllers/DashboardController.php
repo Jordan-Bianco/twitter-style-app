@@ -51,7 +51,7 @@ class DashboardController extends Controller
             throw new ForbiddenException();
         }
 
-        $this->app->builder->delete('users', 'id', $this->app->session->get('user')['id']);
+        $this->app->builder->delete('users', 'id', $this->app->session->authId());
 
         $this->app->session->remove('user');
         $this->app->session->destroySession();

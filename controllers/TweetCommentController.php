@@ -72,7 +72,7 @@ class TweetCommentController extends Controller
         $comment = new Comment();
 
         $comment->create([
-            'user_id' => $this->app->session->get('user')['id'],
+            'user_id' => $this->app->session->authId(),
             'tweet_id' => $request->routeParams['id'],
             'body' => $validated['body']
         ]);

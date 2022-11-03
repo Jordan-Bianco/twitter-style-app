@@ -7,8 +7,7 @@
 
         <ul>
             <?php foreach ($users as $user) : ?>
-
-                <li class="mb-6">
+                <li class="mb-3 panel">
                     <a href="/<?= $user['username'] ?>" class="flex items-center space-x-2">
                         <img src="https://eu.ui-avatars.com/api/?name=<?= $user['username'] ?>" alt="user_avatar" class="w-9 h-9 rounded-lg flex-none">
                         <div>

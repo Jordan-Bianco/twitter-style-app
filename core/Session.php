@@ -131,4 +131,12 @@ class Session
     {
         return isset($_SESSION['user']);
     }
+
+    /**
+     * @return int 
+     */
+    public function authId(): int
+    {
+        return $_SESSION['user']['id'];
+    }
 }

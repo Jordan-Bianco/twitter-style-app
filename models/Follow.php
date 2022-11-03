@@ -19,7 +19,7 @@ class Follow extends Model
     {
         $follow = Application::$app->builder
             ->select('follows')
-            ->where('follower_id', Application::$app->session->get('user')['id'])
+            ->where('follower_id', Application::$app->session->authId())
             ->andWhere('following_id', $userId)
             ->first();
 
