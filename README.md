@@ -35,9 +35,9 @@ Here the logged in user can manage the requests sent (deleting them), as well as
 
 On the other hand, the user who has received the request, will have a pending request on his followers page (accessible by clicking the counter of the followers). In this page the pending request can be accepted or declined.
 
-### Usage
+### Installation
 
--   Clone the project with "git clone nomerepo"
+-   Clone the project with "git clone https://github.com/Jordan-Bianco/twitter-style-app.git"
 -   Run the command "composer install"
 -   Enter the public folder
 -   Launch the server with the command "php -S localhost:8888"
