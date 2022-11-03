@@ -1,4 +1,4 @@
-## Tweet app
+# Tweet app
 
 This project is a simple twitter style application, developed using my [mvc framework](https://github.com/Jordan-Bianco/mvc_framework) and styled with tailwind css (cdn).<br>
 
@@ -9,12 +9,12 @@ In the user's dashboard, it is possibile to change profile information, update t
 <br>
 The site is accessible to registered users only.
 
-### Following system
+## Following system
 
 The main feature of this small application is the follow/unfollow system. <br>
 On the homepage of the logged-in user, will be shown only his tweets and those of the users he is following.
 
-#### Sending a follow request
+### Sending a follow request
 
 On a user's profile, you can send a follow request by clicking on the follow button. <br> After clicking the button, a record is stored in the database, containing the follower_id, the following_id and the status. (pending by default).<br>
 If you press the button again, before the request is accepted or declined, the record in the database will be deleted.<br>
@@ -24,7 +24,7 @@ In the following demo, I am logged in as "user1", and I am sending a follow requ
 
 ![Follow preview](public/gif/follow-request.gif)
 
-#### Managing follow requests
+### Managing follow requests
 
 The user who sent a follow request will find a pending request on his following list page (accessible by clicking the counter of the following).
 Here the logged in user can manage the requests sent (deleting them), as well as manage the users he already follows.
@@ -35,7 +35,7 @@ Here the logged in user can manage the requests sent (deleting them), as well as
 
 On the other hand, the user who has received the request, will have a pending request on his followers page (accessible by clicking the counter of the followers). In this page the pending request can be accepted or declined.
 
-### Installation
+## Installation
 
 -   Clone the project with "git clone https://github.com/Jordan-Bianco/twitter-style-app.git"
 -   Enter the folder and open the project with your editor
