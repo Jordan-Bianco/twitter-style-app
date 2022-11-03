@@ -25,7 +25,7 @@ $this->title .= ' - Edit comment';
                         @<?= Application::$app->session->get('user')['username']; ?>
                     </span>
 
-                    <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
+                    <button type="submit" class="tracking-wide bg-sky-500 hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300 text-white px-5 py-1.5 rounded-full text-xs">
                         Edit comment
                     </button>
                 </div>

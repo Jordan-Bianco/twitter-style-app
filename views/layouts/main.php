@@ -24,13 +24,13 @@ use App\core\Application;
     <div class="p-6 max-w-6xl mx-auto">
 
         <?php if (isset($_SESSION['success'])) : ?>
-            <div class="fixed top-[68px] right-10 bg-lime-200 text-lime-600 p-4 rounded-xl shadow-md shadow-zinc-900 z-20">
+            <div class="text-xs fixed top-[68px] right-10 bg-sky-200 text-sky-600 p-4 rounded-xl shadow-md shadow-zinc-900 z-20">
                 <?php Application::$app->session->getFlashMessage('success') ?>
             </div>
         <?php endif ?>
 
         <?php if (isset($_SESSION['error'])) : ?>
-            <div class="fixed top-[68px] right-10 bg-red-200 text-red-600 p-4 rounded-xl shadow-md shadow-zinc-900 z-20">
+            <div class="text-xs fixed top-[68px] right-10 bg-red-200 text-red-600 p-4 rounded-xl shadow-md shadow-zinc-900 z-20">
                 <?php Application::$app->session->getFlashMessage('error') ?>
             </div>
         <?php endif ?>

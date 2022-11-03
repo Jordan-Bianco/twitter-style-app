@@ -40,7 +40,7 @@ use App\models\Like;
             <?= $tweet['body'] ?>
         </p>
 
-        <p class="text-[11px] text-lime-500 font-medium">
+        <p class="text-[11px] text-sky-500 font-medium">
             <?= $tweet['created_at'] ?>
         </p>
 
@@ -101,7 +101,7 @@ use App\models\Like;
                         <span class="font-medium block text-sm"><?= Application::$app->session->get('user')['username'] ?></span>
                     </div>
 
-                    <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
+                    <button type="submit" class="tracking-wide bg-sky-500 hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300 text-white px-5 py-1.5 rounded-full text-xs">
                         Comment
                     </button>
                 </div>
@@ -147,7 +147,7 @@ use App\models\Like;
                         <?= $comment['body'] ?>
                     </p>
 
-                    <p class="text-[11px] text-lime-500 font-medium">
+                    <p class="text-[11px] text-sky-500 font-medium">
                         <?= $comment['created_at'] ?>
                     </p>
                 </div>
@@ -161,7 +161,7 @@ use App\models\Like;
                     <!-- Prev button -->
                     <?php if ($currentPage > 1) : ?>
                         <a href="/tweets/<?= $tweet['id'] ?>?page=<?= $currentPage - 1 ?>">
-                            <svg class="w-5 h-5 text-lime-500 font-semibold" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="w-5 h-5 text-sky-500 font-semibold" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                         </a>
@@ -170,7 +170,7 @@ use App\models\Like;
                     <!-- Links -->
                     <div class="flex items-center space-x-2.5">
                         <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-                            <a class="<?= $i == $currentPage ? 'text-lime-500 font-medium' : 'text-zinc-500' ?> block bg-zinc-900 rounded-lg px-2 py-0.5" href="/tweets/<?= $tweet['id'] ?>?page=<?= $i ?>">
+                            <a class="<?= $i == $currentPage ? 'text-sky-500 font-medium' : 'text-zinc-500' ?> block bg-zinc-900 rounded-lg px-2 py-0.5" href="/tweets/<?= $tweet['id'] ?>?page=<?= $i ?>">
                                 <?= $i ?>
                             </a>
                         <?php endfor ?>
@@ -179,7 +179,7 @@ use App\models\Like;
                     <!-- Next button -->
                     <?php if ($totalPages > $currentPage) : ?>
                         <a href="/tweets/<?= $tweet['id'] ?>?page=<?= $currentPage + 1 ?>">
-                            <svg class="w-5 h-5 text-lime-500 font-semibold" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="w-5 h-5 text-sky-500 font-semibold" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                             </svg>
                         </a>

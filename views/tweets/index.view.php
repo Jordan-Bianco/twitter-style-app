@@ -18,7 +18,7 @@ $this->title .= ' - Home';
                 <img src="https://eu.ui-avatars.com/api/?name=<?= $user['username'] ?>" alt="user_avatar" class="w-9 h-9 rounded-lg flex-none">
 
                 <div>
-                    <span class="block font-medium text-lime-500"><?= $user['username'] ?></span>
+                    <span class="block font-medium text-sky-500"><?= $user['username'] ?></span>
                     <span class="block text-xs text-zinc-500"><?= $user['email'] ?></span>
                 </div>
             </div>

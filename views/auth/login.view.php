@@ -10,7 +10,7 @@ $this->title .= ' - Login';
     <section class="p-6 border border-zinc-700 shadow-md shadow-zinc-900 rounded-lg">
         <h2 class="text-center text-3xl font-medium mb-2.5">Login</h2>
         <p class="text-center text-xs text-zinc-400 mb-6">Not registered yet?
-            <span class="text-lime-500"><a href="/register">Sign in</a></span>
+            <span class="text-sky-500"><a href="/register">Sign in</a></span>
         </p>
 
         <!-- ValidationErrors -->
@@ -32,7 +32,7 @@ $this->title .= ' - Login';
             </div>
             <a class="block text-xs text-zinc-400 hover:underline mb-8 max-w-max" href="/forgot-password">Forgot password?</a>
 
-            <button type="submit" class="tracking-wide w-full bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white p-3 rounded-lg text-xs">
+            <button type="submit" class="tracking-wide w-full bg-sky-500 hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300 text-white p-3 rounded-lg text-xs">
                 Log in
             </button>
         </form>

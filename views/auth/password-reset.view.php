@@ -57,7 +57,7 @@ if ($user['token'] !== $token) {
                 <input name="password_confirm" placeholder="Confirm your password" type="password" class="w-full text-xs px-4 py-3 bg-zinc-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-700 transition">
             </div>
 
-            <button type="submit" class="tracking-wide w-full bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white p-3 rounded-lg text-xs">
+            <button type="submit" class="tracking-wide w-full bg-sky-500 hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300 text-white p-3 rounded-lg text-xs">
                 Reset password
             </button>
         </form>

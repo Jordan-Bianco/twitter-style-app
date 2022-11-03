@@ -18,7 +18,7 @@ use App\core\Application;
                     <span class="font-medium block text-sm"><?= $user['username'] ?></span>
                 </div>
 
-                <button type="submit" class="tracking-wide bg-lime-500 hover:bg-lime-400 focus:outline-none focus:ring-2 focus:ring-lime-300 text-white px-5 py-1.5 rounded-full text-xs">
+                <button type="submit" class="tracking-wide bg-sky-500 hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300 text-white px-5 py-1.5 rounded-full text-xs">
                     Tweet
                 </button>
             </div>

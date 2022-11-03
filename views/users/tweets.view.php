@@ -2,16 +2,17 @@
 
 use App\core\Application;
 use App\models\Like;
+?>
 
-if ($tweets) : ?>
-    <div class="mt-10">
+<?php if ($tweets) : ?>
+    <div class="mt-8">
         <?php foreach ($tweets as $tweet) : ?>
             <div class="panel mb-3 space-y-2.5">
-                <header class="flex justify-between items-center">
-                    <a href="/<?= $tweet['username'] ?>" class="flex items-center space-x-2">
-                        <img src="https://eu.ui-avatars.com/api/?name=<?= $tweet['username'] ?>" alt="user_avatar" class="w-7 h-7 rounded-lg flex-none">
-                        <span class="font-medium block text-sm">@<?= $tweet['username'] ?></span>
-                    </a>
+                <header class="flex justify-between items-center mb-2.5">
+                    <div class="flex items-center space-x-2">
+                        <img src="https://eu.ui-avatars.com/api/?name=<?= $user['username'] ?>" alt="user_avatar" class="w-7 h-7 rounded-lg flex-none">
+                        <span class="font-medium block text-sm">@<?= $user['username'] ?></span>
+                    </div>
 
                     <?php if ($tweet['user_id'] === Application::$app->session->authId()) : ?>
                         <div class="flex items-center space-x-1">
@@ -92,17 +93,18 @@ if ($tweets) : ?>
             <div class="flex items-center justify-between space-x-2">
                 <!-- Prev button -->
                 <?php if ($currentPage > 1) : ?>
-                    <a href="/tweets?page=<?= $currentPage - 1 ?>">
+                    <a href="/<?= $user['username'] ?>?page=<?= $currentPage - 1 ?>">
                         <svg class="w-5 h-5 text-sky-500 font-semibold" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                         </svg>
                     </a>
                 <?php endif ?>
 
+
                 <!-- Links -->
                 <div class="flex items-center space-x-2.5">
                     <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-                        <a class="<?= $i == $currentPage ? 'text-sky-500 font-medium' : 'text-zinc-500' ?> block bg-zinc-900 rounded-lg px-2 py-0.5" href="/tweets?page=<?= $i ?>">
+                        <a class="<?= $i == $currentPage ? 'text-sky-500 font-medium' : 'text-zinc-500' ?> block bg-zinc-900 rounded-lg px-2 py-0.5" href="/<?= $user['username'] ?>?page=<?= $i ?>">
                             <?= $i ?>
                         </a>
                     <?php endfor ?>
@@ -110,7 +112,7 @@ if ($tweets) : ?>
 
                 <!-- Next button -->
                 <?php if ($totalPages > $currentPage) : ?>
-                    <a href="/tweets?page=<?= $currentPage + 1 ?>">
+                    <a href="/<?= $user['username'] ?>?page=<?= $currentPage + 1 ?>">
                         <svg class="w-5 h-5 text-sky-500 font-semibold" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                         </svg>
@@ -132,5 +134,4 @@ if ($tweets) : ?>
         </div>
     <?php endif ?>
     <!-- End pagination -->
-
 <?php endif ?>
