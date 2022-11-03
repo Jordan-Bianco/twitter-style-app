@@ -38,9 +38,10 @@ On the other hand, the user who has received the request, will have a pending re
 ### Installation
 
 -   Clone the project with "git clone https://github.com/Jordan-Bianco/twitter-style-app.git"
--   Run the command "composer install"
--   Enter the public folder
--   Launch the server with the command "php -S localhost:8888"
+-   Enter the folder and open the project with your editor
+-   In the terminal run the command "composer install"
 -   Create the .env file and copy the contents of the .env-example file by entering your credentials
--   Run the command php migrations.php
+-   Enter the public folder
+-   In the terminal launch the server with the command "php -S localhost:8888"
+-   In the terminal run the command php migrations.php
 -   Optionally, run the command php seed.php, to populate the database with fake data.
