@@ -30,7 +30,8 @@ class FollowController extends Controller
     public function destroy(Request $request)
     {
         $follow = $this->app->builder
-            ->select('follows')
+            ->select()
+            ->from('follows')
             ->where('follower_id', $this->app->session->authId())
             ->andWhere('following_id', $request->routeParams['id'])
             ->first();

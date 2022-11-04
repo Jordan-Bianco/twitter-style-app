@@ -35,7 +35,8 @@ class ResetPasswordController extends Controller
         $validated = $request->validate($_POST, $rules, $url);
 
         $user = $this->app->builder
-            ->select('users')
+            ->select()
+            ->from('users')
             ->where('id', $_POST['id'])
             ->first();
 

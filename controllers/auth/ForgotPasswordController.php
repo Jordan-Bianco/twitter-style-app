@@ -31,7 +31,8 @@ class ForgotPasswordController extends Controller
         $validated = $request->validate($_POST, $rules, '/forgot-password');
 
         $user = $this->app->builder
-            ->select('users')
+            ->select()
+            ->from('users')
             ->where('email', $validated['email'])
             ->first();
 

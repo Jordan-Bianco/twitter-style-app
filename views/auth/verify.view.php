@@ -15,7 +15,8 @@ $id = substr($params[0], strpos($params[0], '=') + 1);
 $token = substr($params[1], strpos($params[1], '=') + 1);
 
 $user = Application::$app->builder
-    ->select('users')
+    ->select()
+    ->from('users')
     ->where('id', $id)
     ->first();
 

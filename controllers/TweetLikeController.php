@@ -36,7 +36,8 @@ class TweetLikeController extends Controller
         $tweetId = $request->routeParams['id'];
 
         $likeInDb = $this->app->builder
-            ->select('likes')
+            ->select()
+            ->from('likes')
             ->where('user_id', $this->app->session->authId())
             ->andWhere('tweet_id', $tweetId)
             ->first();

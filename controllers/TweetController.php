@@ -28,8 +28,12 @@ class TweetController extends Controller
         $userFollowingIds = $this->getUserFollowingIds();
 
         $perPage = 5;
-        $total = $this->app->builder->raw("SELECT COUNT(*) as count FROM tweets WHERE user_id IN ($userFollowingIds)");
-        $total = $total[0]['count'];
+        $total = $this->app->builder
+            ->count()
+            ->from('tweets')
+            ->whereIn('user_id', [$userFollowingIds])
+            ->getCount();
+
         $totalPages = ceil($total / $perPage);
         $currentPage = isset($_GET['page']) && !empty($_GET['page']) ? $_GET['page'] : 1;
         $offset = ($currentPage - 1) * $perPage;
@@ -69,7 +73,12 @@ class TweetController extends Controller
     public function show(Request $request)
     {
         $perPage = 3;
-        $total = $this->app->builder->count('comments', ['tweet_id', $request->routeParams['id']]);
+        $total = $this->app->builder
+            ->count()
+            ->from('comments')
+            ->where('tweet_id', $request->routeParams['id'])
+            ->getCount();
+
         $totalPages = ceil($total / $perPage);
         $currentPage = isset($_GET['page']) && !empty($_GET['page']) ? $_GET['page'] : 1;
 
@@ -77,12 +86,13 @@ class TweetController extends Controller
         $rowCount = $perPage;
 
         $tweet = $this->app->builder
-            ->select('tweets', [
+            ->select([
                 'tweets.*',
                 'users.username',
                 '(SELECT COUNT(*) FROM likes WHERE likes.tweet_id = tweets.id) as likes_count',
                 '(SELECT COUNT(*) FROM comments WHERE comments.tweet_id = tweets.id) as comments_count'
             ])
+            ->from('tweets')
             ->leftJoin('likes', 'tweet_id', 'tweets', 'id')
             ->leftJoin('comments', 'tweet_id', 'tweets', 'id')
             ->join('users', 'id', 'tweets', 'user_id')
@@ -118,7 +128,8 @@ class TweetController extends Controller
     public function edit(Request $request)
     {
         $tweet = $this->app->builder
-            ->select('tweets')
+            ->select()
+            ->from('tweets')
             ->where('id', $request->routeParams['id'])
             ->first();
 
@@ -136,7 +147,8 @@ class TweetController extends Controller
     public function update(Request $request)
     {
         $tweet = $this->app->builder
-            ->select('tweets')
+            ->select()
+            ->from('tweets')
             ->where('id', $request->routeParams['id'])
             ->first();
 
@@ -158,7 +170,8 @@ class TweetController extends Controller
     public function destroy(Request $request)
     {
         $tweet = $this->app->builder
-            ->select('tweets')
+            ->select()
+            ->from('tweets')
             ->where('id', $request->routeParams['id'])
             ->first();
 
@@ -214,7 +227,7 @@ class TweetController extends Controller
     public function getMostLikedTweets(): array
     {
         return $this->app->builder
-            ->select('tweets', [
+            ->select([
                 '(SELECT COUNT(*) FROM likes WHERE likes.tweet_id = tweets.id) as likes_count',
                 '(SELECT COUNT(*) FROM comments WHERE comments.tweet_id = tweets.id) as comments_count',
                 'tweets.id',
@@ -222,6 +235,7 @@ class TweetController extends Controller
                 'tweets.created_at',
                 'users.username'
             ])
+            ->from('tweets')
             ->join('likes', 'tweet_id', 'tweets', 'id')
             ->join('users', 'id', 'tweets', 'user_id')
             ->leftJoin('comments', 'tweet_id', 'tweets', 'id')
@@ -237,7 +251,7 @@ class TweetController extends Controller
     public function getMostCommentedTweets(): array
     {
         return $this->app->builder
-            ->select('tweets', [
+            ->select([
                 '(SELECT COUNT(*) FROM likes WHERE likes.tweet_id = tweets.id) as likes_count',
                 '(SELECT COUNT(*) FROM comments WHERE comments.tweet_id = tweets.id) as comments_count',
                 'tweets.id',
@@ -245,6 +259,7 @@ class TweetController extends Controller
                 'tweets.created_at',
                 'users.username'
             ])
+            ->from('tweets')
             ->join('users', 'id', 'tweets', 'user_id')
             ->leftjoin('likes', 'tweet_id', 'tweets', 'id')
             ->leftJoin('comments', 'tweet_id', 'tweets', 'id')
@@ -262,7 +277,8 @@ class TweetController extends Controller
         $loggedInUserId = $this->app->session->authId();
 
         $followingIds = $this->app->builder
-            ->select('follows', ['following_id'])
+            ->select(['following_id'])
+            ->from('follows')
             ->where('follower_id', $loggedInUserId)
             ->andWhere('status', 'Accepted')
             ->get();
@@ -284,10 +300,11 @@ class TweetController extends Controller
     public function getFollowRequests(): array
     {
         return $this->app->builder
-            ->select('follows', [
+            ->select([
                 'follows.*',
                 'users.username'
             ])
+            ->from('follows')
             ->join('users', 'id', 'follows', 'follower_id')
             ->where('following_id', $this->app->session->authId())
             ->andWhere('status', 'Pending')

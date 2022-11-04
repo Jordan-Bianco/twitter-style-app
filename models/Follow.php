@@ -18,7 +18,8 @@ class Follow extends Model
     public static function requestStatus(int $userId): bool|string
     {
         $follow = Application::$app->builder
-            ->select('follows')
+            ->select()
+            ->from('follows')
             ->where('follower_id', Application::$app->session->authId())
             ->andWhere('following_id', $userId)
             ->first();

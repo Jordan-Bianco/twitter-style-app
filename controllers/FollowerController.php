@@ -19,10 +19,11 @@ class FollowerController extends Controller
         $status = $this->setFollowFilterStatus($request->routeParams['username']);
 
         $followers = $this->app->builder
-            ->select('follows', [
+            ->select([
                 'follows.*',
                 'users.username'
             ])
+            ->from('follows')
             ->join('users', 'id', 'follows', 'follower_id')
             ->whereSubquery('following_id', '(SELECT id FROM users WHERE username = :username)', $request->routeParams['username'])
             ->andWhere('status', $status)

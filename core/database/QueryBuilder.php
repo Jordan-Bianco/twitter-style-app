@@ -17,42 +17,68 @@ class QueryBuilder
     }
 
     /**
-     * @param string $table
-     * @param array|null $condition
-     * @return int
+     * @param array $fields
+     * @return QueryBuilder
      */
-    public function count(string $table, ?array $condition = null): int
+    public function select(array $fields = []): QueryBuilder
     {
-        $query = "SELECT COUNT(*) FROM $table";
-
-        if ($condition) {
-            $query .= " WHERE $condition[0] = " . ":$condition[0]";
+        if (empty($fields)) {
+            $fields = '*';
+        } else {
+            $fields = implode(', ', $fields);
         }
 
-        $statement = $this->pdo->prepare($query);
+        $this->query = "SELECT $fields";
 
-        if ($condition) {
-            $statement->bindParam(":$condition[0]", $condition[1]);
-        }
-
-        $statement->execute();
-
-        return $statement->fetchColumn();
+        return $this;
     }
 
     /**
      * @param string $table
-     * @param array|null $fields
      * @return QueryBuilder
      */
-    public function select(string $table, ?array $fields = []): QueryBuilder
+    public function from(string $table): QueryBuilder
     {
-        $fields = $fields ? implode(', ', $fields) : '*';
-
-        $this->query = "SELECT $fields FROM $table";
+        $this->query .= " FROM $table";
 
         return $this;
     }
+
+    /**
+     * @param string $expression
+     * @return QueryBuilder
+     */
+    public function count(string $expression = '*'): QueryBuilder
+    {
+        $this->query = "SELECT COUNT($expression)";
+
+        return $this;
+    }
+
+
+    // /**
+    //  * @param string $table
+    //  * @param array|null $condition
+    //  * @return int
+    //  */
+    // public function count(string $table, ?array $condition = null): int
+    // {
+    //     $query = "SELECT COUNT(*) FROM $table";
+
+    //     if ($condition) {
+    //         $query .= " WHERE $condition[0] = " . ":$condition[0]";
+    //     }
+
+    //     $statement = $this->pdo->prepare($query);
+
+    //     if ($condition) {
+    //         $statement->bindParam(":$condition[0]", $condition[1]);
+    //     }
+
+    //     $statement->execute();
+
+    //     return $statement->fetchColumn();
+    // }
 
     /**
      * @param string $field
@@ -61,7 +87,7 @@ class QueryBuilder
      * @param string|null $tablePrefix
      * @return QueryBuilder
      */
-    public function where(string $field, string $value, ?string $condition = '=', ?string $tablePrefix = null): QueryBuilder
+    public function where(string $field, string $value, string $condition = '=', ?string $tablePrefix = null): QueryBuilder
     {
         $this->query .= " WHERE $tablePrefix$field $condition :$field";
 
@@ -112,22 +138,22 @@ class QueryBuilder
         return $this;
     }
 
-    // /**
-    //  * @param string $field
-    //  * @param array $array
-    //  * @param string|null $tablePrefix
-    //  * @return QueryBuilder
-    //  */
-    // public function whereIn(string $field, array $array, ?string $tablePrefix = null): QueryBuilder
-    // {
-    //     $array = implode(', ', $array);
+    /**
+     * @param string $field
+     * @param array $array
+     * @param string|null $tablePrefix
+     * @return QueryBuilder
+     */
+    public function whereIn(string $field, array $array, ?string $tablePrefix = null): QueryBuilder
+    {
+        $array = implode(', ', $array);
 
-    //     $this->query .= " WHERE $tablePrefix$field IN ($array)";
+        $this->query .= " WHERE $tablePrefix$field IN ($array)";
 
-    //     $this->statement = $this->pdo->prepare($this->query);
+        $this->statement = $this->pdo->prepare($this->query);
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
     /**
      * @param string $field
@@ -162,18 +188,6 @@ class QueryBuilder
         $this->statement = $this->pdo->prepare($this->query);
 
         return $this;
-    }
-
-
-    public function bindParams(): void
-    {
-        foreach ($this->params as $param) {
-            foreach ($param as $key => &$value) {
-                $this->statement->bindParam($key, $value);
-            }
-        }
-
-        $this->params = [];
     }
 
     /**
@@ -255,21 +269,23 @@ class QueryBuilder
     }
 
 
+    public function bindParams(): void
+    {
+        foreach ($this->params as $param) {
+            foreach ($param as $key => &$value) {
+                $this->statement->bindParam($key, $value);
+            }
+        }
+
+        $this->params = [];
+    }
+
     /**
      * @return array 
      */
     public function get(): array
     {
-        if (isset($this->statement)) {
-
-            $this->bindParams();
-
-            $this->statement->execute();
-        } else {
-
-            $this->statement = $this->pdo->prepare($this->query);
-            $this->statement->execute();
-        }
+        $this->prepareAndExecute();
 
         $results = $this->statement->fetchAll();
 
@@ -280,18 +296,11 @@ class QueryBuilder
     }
 
     /**
-     * first() viene sempre dopo where(), quindi devo solo eseguire lo statement
-     * che viene preparato nel where()
-     * 
      * @return array|null
      */
     public function first(): array |null
     {
-        if (!empty($this->params)) {
-            $this->bindParams();
-        }
-
-        $this->statement->execute();
+        $this->prepareAndExecute();
 
         $result = $this->statement->fetch();
 
@@ -299,6 +308,35 @@ class QueryBuilder
         $this->query = null;
 
         return $result ? $result : null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCount(): int
+    {
+        $this->prepareAndExecute();
+
+        $result = $this->statement->fetchColumn();
+
+        $this->statement = null;
+        $this->query = null;
+
+        return $result ? $result : null;
+    }
+
+    /**
+     * @return void 
+     */
+    protected function prepareAndExecute(): void
+    {
+        if (isset($this->statement)) {
+            $this->bindParams();
+            $this->statement->execute();
+        } else {
+            $this->statement = $this->pdo->prepare($this->query);
+            $this->statement->execute();
+        }
     }
 
     /**

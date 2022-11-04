@@ -24,7 +24,8 @@ class TweetCommentController extends Controller
     public function edit(Request $request)
     {
         $comment = $this->app->builder
-            ->select('comments')
+            ->select()
+            ->from('comments')
             ->where('id', $request->routeParams['id'])
             ->first();
 
@@ -42,7 +43,8 @@ class TweetCommentController extends Controller
     public function update(Request $request)
     {
         $comment = $this->app->builder
-            ->select('comments')
+            ->select()
+            ->from('comments')
             ->where('id', $request->routeParams['id'])
             ->first();
 
@@ -83,7 +85,8 @@ class TweetCommentController extends Controller
     public function destroy(Request $request)
     {
         $comment = $this->app->builder
-            ->select('comments')
+            ->select()
+            ->from('comments')
             ->where('id', $request->routeParams['id'])
             ->first();
 

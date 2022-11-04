@@ -26,7 +26,8 @@ class UpdatePasswordController extends Controller
         $validated = $request->validate($_POST, $rules, '/settings');
 
         $user = $this->app->builder
-            ->select('users')
+            ->select()
+            ->from('users')
             ->where('id', $this->app->session->authId())
             ->first();
 

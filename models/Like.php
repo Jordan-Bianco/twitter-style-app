@@ -19,7 +19,8 @@ class Like extends Model
     public static function hasBeenLikedBy(int $userId, int $resourceId): bool
     {
         $likeInDb = Application::$app->builder
-            ->select('likes')
+            ->select()
+            ->from('likes')
             ->where('user_id', $userId)
             ->andWhere('tweet_id', $resourceId)
             ->first();

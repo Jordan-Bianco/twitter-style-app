@@ -65,7 +65,10 @@ class DashboardController extends Controller
      */
     protected function updateSessionUser(int $userId): void
     {
-        $user = $this->app->builder->select('users')->where('id', $userId)->first();
+        $user = $this->app->builder->select()
+            ->from('users')
+            ->where('id', $userId)
+            ->first();
 
         $user = array_diff_key($user, array_flip(['password']));
 

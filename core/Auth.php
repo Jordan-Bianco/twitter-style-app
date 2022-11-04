@@ -16,7 +16,8 @@ class Auth
     public static function attemptLogin(string $email, string $password): bool|array
     {
         $user = Application::$app->builder
-            ->select('users')
+            ->select()
+            ->from('users')
             ->where('email', $email)
             ->first();
 

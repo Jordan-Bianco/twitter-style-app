@@ -111,7 +111,8 @@ class Validation
                  **/
                 if (!str_contains($table, '-')) {
                     $fieldInDb = Application::$app->builder
-                        ->select($table)
+                        ->select()
+                        ->from($table)
                         ->where($field, $fieldValue[$field])
                         ->first();
 
@@ -128,7 +129,8 @@ class Validation
                     $table = substr($table, 0, strpos($table, '-'));
 
                     $models = Application::$app->builder
-                        ->select($table)
+                        ->select()
+                        ->from($table)
                         ->where('id', $modelId, '!=')
                         ->get();
 
@@ -152,7 +154,8 @@ class Validation
                 $table = explode(':', array_values($existsRule)[0])[1];
 
                 $fieldInDb = Application::$app->builder
-                    ->select($table)
+                    ->select()
+                    ->from($table)
                     ->where($field, $fieldValue[$field])
                     ->first();
 

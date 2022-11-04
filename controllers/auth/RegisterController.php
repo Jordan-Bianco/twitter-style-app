@@ -47,7 +47,8 @@ class RegisterController extends Controller
         ]);
 
         $user = $this->app->builder
-            ->select('users')
+            ->select()
+            ->from('users')
             ->where('email', $validated['email'])
             ->first();
 

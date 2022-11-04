@@ -21,7 +21,7 @@ class UserController extends Controller
     public function show(Request $request)
     {
         $user = $this->app->builder
-            ->select('users', [
+            ->select([
                 'users.id',
                 'users.username',
                 'users.bio',
@@ -31,6 +31,7 @@ class UserController extends Controller
                 "(SELECT COUNT(*) FROM follows WHERE follower_id = users.id AND status = 'Accepted') as following_count",
                 "(SELECT COUNT(*) FROM follows WHERE following_id = users.id AND status = 'Accepted') as followers_count"
             ])
+            ->from('users')
             ->where('username', $request->routeParams['username'])
             ->first();
 
@@ -39,7 +40,12 @@ class UserController extends Controller
         }
 
         $perPage = 5;
-        $total = $this->app->builder->count('tweets', ['user_id', $user['id']]);
+        $total = $this->app->builder
+            ->count()
+            ->from('tweets')
+            ->where('user_id', $user['id'])
+            ->getCount();
+
         $totalPages = ceil($total / $perPage);
         $currentPage = isset($_GET['page']) && !empty($_GET['page']) ? $_GET['page'] : 1;
 
