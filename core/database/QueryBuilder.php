@@ -322,7 +322,7 @@ class QueryBuilder
         $this->statement = null;
         $this->query = null;
 
-        return $result ? $result : null;
+        return $result ? $result : 0;
     }
 
     /**
